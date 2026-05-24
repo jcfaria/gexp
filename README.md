@@ -53,10 +53,25 @@ For more complete examples, see:
 
 - `vignette("gexp-overview", package = "gexp")`
 
+## Demos
+
+After attaching the package, list and run interactive demos (one per experiment type and design):
+
+```r
+library(gexp)
+demo()                    # menu of all demos
+demo("simple-crd")        # SIMPLE + CRD
+demo("fe-rcbd")           # factorial + RCBD
+demo("spe-crd")           # split-plot + CRD
+```
+
+Available topics: `simple-crd`, `simple-rcbd`, `simple-lsd`, `fe-crd`, `fe-rcbd`, `fe-lsd`, `spe-crd`, `spe-rcbd`, `spe-lsd`.
+
 ## Project Layout
 
 - `/R`: Core computational, planning, and plotting functions.
 - `/man`: Documentation (`.Rd` files).
+- `/demo`: Runnable examples for each type and design.
 - `/inst`: Extra package materials (e.g. bibliography).
 - `/vignettes`: Vignettes and tutorials.
 
@@ -72,7 +87,7 @@ Contributions are welcome. Open an **[Issue](https://github.com/ivanalaman/gexp/
 
 - Modernize package metadata and repository layout to match current maintenance standards.
 - Expand test coverage for design generation and plotting behavior.
-- Add practical vignettes and runnable demos with real-world examples.
+- Expand demos and vignettes with additional real-world examples.
 - Improve CI signals and package quality checks.
 
 ---

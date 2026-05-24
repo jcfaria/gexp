@@ -18,6 +18,7 @@
 - Revised vignette prose: improved English and translated remaining Portuguese passages.
 
 ### Documentation
+- Added `demo/` with nine runnable examples (`demo(package = "gexp")`) covering every `type` x `design` combination (SIMPLE, FE, SPE x CRD, RCBD, LSD).
 - Standardized author names to scientific notation (`Faria, J. C.`; `Allaman, I. B.`) across the package.
 - Migrated package history from `ChangeLog` to `NEWS.md`.
 - Refactored `README.md` to match the documentation standard used in sibling packages (badges, features, installation, quick start, project layout, contributing, and roadmap).

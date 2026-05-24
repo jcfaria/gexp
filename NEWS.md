@@ -8,6 +8,8 @@
 - Added `R/gexp-utils.R` with shared helpers for error simulation, response assembly, data-frame binding, result packing, and contrast merging; all nine `gexp.*` methods now call these helpers (no change in exported behaviour).
 - Extended `gexp-utils.R` with helpers for default fixed effects, block effects, treatment/contrast construction, row/column LSD layout, and interaction terms; RCBD and LSD methods now use these (behaviour unchanged).
 - Added split-plot helpers (`.gexp_zformula`, `.gexp_Z`, `.gexp_spe_finish`) for whole-plot `Z` matrix construction and the shared SPE response tail; `gexp.spe_crd`, `gexp.spe_rcbd`, and `gexp.spe_lsd` now use them (behaviour unchanged).
+- Added `R/gexp-plot-utils.R` with shared helpers for layout centres, static/dynamic frames, grids, labels, and locator text; all nine `plot.gexp.*` methods now use them.
+- Fixed plot label coordinates when row and column centre vectors differ in length (e.g. factorial RCBD and split-plot layouts).
 
 ### Code style
 - Reformatted all sources under `R/` for readability (aligned named arguments, consistent spacing, and line breaks at commas) without changing program logic.

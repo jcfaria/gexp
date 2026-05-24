@@ -56,21 +56,19 @@ plot.gexp.simple_rcbd <- function(x,
 
   }
 
-  ifelse(random==FALSE,
-         {
-           treat <- rep(levelsfac,
-                        repp*length(levelsblock))
-         },
-         {
-           lblock <- rep(list(rep(levelsfac,
-                                  repp)),
-                         length(levelsblock))
+  if (!random) {
+    treat <- rep(levelsfac,
+                 repp*length(levelsblock))
+  } else {
+    lblock <- rep(list(rep(levelsfac,
+                           repp)),
+                  length(levelsblock))
 
-           rtreat <- lapply(lblock,
-                            sample)
+    rtreat <- lapply(lblock,
+                     sample)
 
-           treat <- unlist(rtreat)
-         })
+    treat <- unlist(rtreat)
+  }
 
   aux_colsquare <- length(levelsfac)
 
@@ -78,125 +76,32 @@ plot.gexp.simple_rcbd <- function(x,
 
   rowsquare <- length(levelsblock)
 
-  aux_posxcentro <- 1/rowsquare
-
-  aux_posxcentro1 <- aux_posxcentro + ((rowsquare - 1)*2/rowsquare)
-
-  posxcentro <- seq(aux_posxcentro,
-                    aux_posxcentro1,
-                    by = 2/rowsquare)
-
-  aux_posycentro <- 1/columsquare
-
-  aux_posycentro1 <- aux_posycentro + ((columsquare - 1)*2/columsquare)
-
-  posycentro <- seq(aux_posycentro,
-                    aux_posycentro1,
-                    by = 2/columsquare)
+  centers <- .gexp_plot_centers(rowsquare, columsquare)
+  posxcentro <- centers$posxcentro
+  posycentro <- centers$posycentro
 
   if (!dynamic) {
-    op <- par('xaxs', 'yaxs') # Original par('xaxs', 'yaxs')
+    op <- .gexp_plot_static_open(main = main, sub = sub, ...)
 
-    par(xaxs = 'i',
-        yaxs = 'i')
+    .gexp_plot_grid(columsquare, rowsquare, colgrid, ltygrid, lwdgrid)
 
-    plot(1,
-         type = 'n',
-         xlim = c(0, 2),
-         ylim = c(0, 2),
-         axes = FALSE,
-         xlab = '',
-         ylab = '',
-         main = main,
-         sub = sub,
-         ...)
+    .gexp_plot_text_rcbd(posxcentro, posycentro, treat, coltext)
 
-    box()
+    .gexp_plot_arrows_row(rowsquare)
 
-    grid(nx = columsquare,
-         ny = rowsquare,
-         col = colgrid,
-         lty = ltygrid,
-         lwd = lwdgrid)
+    .gexp_plot_label_row(posxcentro, levelsblock, colgrid)
 
-    text(x = rep(posycentro,
-                 length(posxcentro)),
-         y = rep(posxcentro,
-                 rep(length(posycentro),
-                     length(posxcentro))),
-         treat,
-         col = coltext)
-
-    arrows(-0.05,
-           seq(0,
-               2,
-               by = 2/rowsquare),
-           -0.05,
-           seq(2/rowsquare,
-               2,
-               by = 2/rowsquare),
-           angle = 90,
-           xpd = TRUE,
-           code = 3,
-           length = 0.06)
-
-    text(-0.08,
-         posxcentro,
-         levelsblock,
-         col = colgrid,
-         xpd = TRUE,
-         srt = 90)
-
-    par(op) # Restoring the original par('xaxs', 'yaxs')
+    .gexp_plot_static_close(op)
   } else {
-    auxin <- tcltk::tk_choose.files()
+    .gexp_plot_dynamic_frame(main, sub, xleftimg, ybottomimg, xrightimg, ytopimg, ...)
 
-    auxin1 <- gsub('[\\s\\S]*?\\.',
-                   '',
-                   auxin,
-                   perl = TRUE)
+    .gexp_plot_locator_text(paste(labelblock,
+                                   1:rowsquare),
+                            coltext,
+                            message = 'Click with the left button on block and end with the right button!')
 
-    auxin2 <- toupper(auxin1)
-
-    switch(auxin2,
-           PNG = {
-             myimage <- png::readPNG(auxin)
-           },
-           JPEG = {
-             myimage <- jpeg::readJPEG(auxin)
-           },
-           JPG = {
-             myimage <- jpeg::readJPEG(auxin)
-           })
-
-    plot(1,
-         type = 'n',
-         xlab = '',
-         ylab = '',
-         axes = FALSE,
-         main = main,
-         sub = sub,
-         ...)
-
-    rasterImage(myimage,
-                xleft = xleftimg,
-                ybottom = ybottomimg,
-                xright = xrightimg,
-                ytop = ytopimg)
-
-    tcltk::tkmessageBox(message = 'Click with the left button on block and end with the right button!')
-
-    text(x = locator(),
-         y = NULL,
-         paste(labelblock,
-               1:rowsquare),
-         col = coltext)
-
-    tcltk::tkmessageBox(message = 'Now, click with the left button on experimental unit and end with the right button!')
-
-    text(x = locator(),
-         y = NULL,
-         treat,
-         col = coltext)
+    .gexp_plot_locator_text(treat,
+                            coltext,
+                            message = 'Now, click with the left button on experimental unit and end with the right button!')
   }
 }

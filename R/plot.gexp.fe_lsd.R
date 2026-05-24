@@ -60,148 +60,48 @@ plot.gexp.fe_lsd <- function(x,
 
   }
 
-  ifelse(random == FALSE,
-         {
-           rtreat <- latin(length(levelsinter),
-                           levelss = levelsinter,
-                           nrand = 0)
-           treat <- c(rtreat)
-         },
-         {
-           rtreat <- latin(length(levelsinter),
-                           levelss = levelsinter)
-           treat <- c(rtreat)
-         })
+  if (!random) {
+    rtreat <- latin(length(levelsinter),
+                    levelss = levelsinter,
+                    nrand = 0)
+    treat <- c(rtreat)
+  } else {
+    rtreat <- latin(length(levelsinter),
+                    levelss = levelsinter)
+    treat <- c(rtreat)
+  }
 
   rowsquare <- columsquare <- length(levelsrow)
 
-  aux_posxcentro <- 1/rowsquare
-  aux_posxcentro1 <- aux_posxcentro + ((rowsquare - 1)*2/rowsquare)
-  posxcentro <- posycentro <- seq(aux_posxcentro,
-                                  aux_posxcentro1,
-                                  by = 2/rowsquare)
+  centers <- .gexp_plot_centers_square(rowsquare)
+  posxcentro <- centers$posxcentro
+  posycentro <- centers$posycentro
 
   if (!dynamic) {
-    op <- par('xaxs', 'yaxs') # Original par('xaxs', 'yaxs')
+    op <- .gexp_plot_static_open(main = main, sub = sub, ...)
 
-    par(xaxs = 'i',
-        yaxs = 'i')
+    .gexp_plot_grid(columsquare, rowsquare, colgrid, ltygrid, lwdgrid)
 
-    plot(1,
-         type = 'n',
-         xlim = c(0, 2),
-         ylim = c(0, 2),
-         axes = FALSE,
-         xlab = '',
-         ylab = '',
-         main = main,
-         sub = sub,
-         ...)
+    .gexp_plot_text_rcbd(posxcentro, posycentro, treat, coltext)
 
-    box()
+    .gexp_plot_arrows_row(rowsquare)
+    .gexp_plot_arrows_col(rowsquare)
 
-    grid(nx = columsquare,
-         ny = rowsquare,
-         col = colgrid,
-         lty = ltygrid,
-         lwd = lwdgrid)
+    .gexp_plot_label_row(posxcentro, levelsrow, colgrid)
+    .gexp_plot_label_col(posxcentro, levelscol, colgrid)
 
-    text(x = rep(posycentro, length(posxcentro)),
-         y = rep(posxcentro, rep(length(posycentro),
-                                 length(posxcentro))),
-         treat,
-         col = coltext)
-
-    arrows(-0.05,
-           seq(0,
-               2,
-               by = 2/rowsquare),
-           -0.05,
-           seq(2/rowsquare,
-               2,
-               by = 2/rowsquare),
-           angle = 90,
-           xpd = TRUE,
-           code = 3,
-           length = 0.06)
-
-    arrows(seq(0,
-               2,
-               by = 2/rowsquare),
-           2.05,
-           seq(2/rowsquare,
-               2,
-               by = 2/rowsquare),
-           2.05,
-           angle = 90,
-           xpd = TRUE,
-           code = 3,
-           length = 0.06)
-
-    text(-0.08,
-         posxcentro,
-         levelsrow,
-         col = colgrid,
-         xpd = TRUE,
-         srt = 90)
-
-    text(posxcentro,
-         2.08,
-         levelscol,
-         col = colgrid,
-         xpd = TRUE)
-    par(op) # Restoring the original par('xaxs', 'yaxs')
+    .gexp_plot_static_close(op)
   } else {
-    auxin <- tcltk::tk_choose.files()
+    .gexp_plot_dynamic_frame(main, sub, xleftimg, ybottomimg, xrightimg, ytopimg, ...)
 
-    auxin1 <- gsub('[\\s\\S]*?\\.',
-                   '',
-                   auxin,
-                   perl = TRUE)
+    .gexp_plot_locator_text(paste(labelrow,
+                                   1:rowsquare),
+                            coltext)
 
-    auxin2 <- toupper(auxin1)
+    .gexp_plot_locator_text(paste(labelcol,
+                                   1:columsquare),
+                            coltext)
 
-    switch(auxin2,
-           PNG = {
-             myimage <- png::readPNG(auxin)
-           },
-           JPEG = {
-             myimage <- jpeg::readJPEG(auxin)
-           },
-           JPG = {
-             myimage <- jpeg::readJPEG(auxin)
-           })
-
-    plot(1,
-         type = 'n',
-         xlab = '',
-         ylab = '',
-         axes = FALSE,
-         main = main,
-         sub = sub,
-         ...)
-
-    rasterImage(myimage,
-                xleft = xleftimg,
-                ybottom = ybottomimg,
-                xright = xrightimg,
-                ytop = ytopimg)
-
-    text(x = locator(),
-         y = NULL,
-         paste(labelrow,
-               1:rowsquare),
-         col = coltext)
-
-    text(x = locator(),
-         y = NULL,
-         paste(labelcol,
-               1:columsquare),
-         col = coltext)
-
-    text(x = locator(),
-         y = NULL,
-         treat,
-         col = coltext)
+    .gexp_plot_locator_text(treat, coltext)
   }
 }

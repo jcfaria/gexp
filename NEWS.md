@@ -2,11 +2,17 @@
 
 # News - gexp R package
 
-## gexp (unreleased)
+## 1.1-0 (2026-05-23) - Faria, J. C.
 
 ### Documentation
 - Migrated package history from `ChangeLog` to `NEWS.md`.
 - Refactored `README.md` to match the documentation standard used in sibling packages (badges, features, installation, quick start, project layout, contributing, and roadmap).
+- Updated `DESCRIPTION` metadata (`Authors@R`, `BugReports`, reformatted `Description`, `License: GPL-2`, `R (>= 4.1.0)`).
+- Removed prebuilt vignette artifact `inst/doc/intro.html` from the repository.
+
+### Infrastructure
+- Added `.Rbuildignore` to exclude version-control and check artefacts from package builds.
+- Added a `testthat` suite under `tests/testthat/` with smoke tests for core design generation, `summary`, `print`, and `plot`.
 
 ## 1.0-21 (2023-06-14) - Allaman, I. B.
 

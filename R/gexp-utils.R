@@ -81,3 +81,103 @@
     contrast
   }
 }
+
+.gexp_fe <- function(x, template)
+{
+  if (is.null(x$fe)) template else x$fe
+}
+
+.gexp_blke <- function(x, default = rep(1, 3))
+{
+  if (is.null(x$blke)) default else x$blke
+}
+
+.gexp_inte <- function(x, fe)
+{
+  makeInteraction(mu   = x$mu,
+                  fe   = fe,
+                  inte = x$inte)
+}
+
+.gexp_treatments <- function(x, fe)
+{
+  makeTreatments(fl        = x$fl,
+                 fe        = fe,
+                 quali     = x$qualiquanti$quali,
+                 quanti    = x$qualiquanti$quanti,
+                 posquanti = x$qualiquanti$posquanti)
+}
+
+.gexp_treatment_contrasts <- function(x, treatments)
+{
+  makeContrasts(factors   = treatments,
+                quali     = x$qualiquanti$quali,
+                quanti    = x$qualiquanti$quanti,
+                posquanti = x$qualiquanti$posquanti)
+}
+
+.gexp_block_setup <- function(x, blke, factors, contrast = list())
+{
+  if (is.null(x$blkl)) {
+    factors$Block <- factor(1:dim(as.matrix(blke))[1])
+    contrast[["Block"]] <- diag(dim(as.matrix(blke))[1])
+  } else {
+    factors[[names(x$blkl)]] <- factor(unlist(x$blkl))
+    contrast[[names(x$blkl)]] <- diag(dim(as.matrix(blke))[1])
+  }
+
+  list(factors  = factors,
+       contrast = contrast)
+}
+
+.gexp_rowe_cole_simple <- function(x, fe)
+{
+  rowe <- if (is.null(x$rowe)) unlist(fe) else x$rowe
+  cole <- if (is.null(x$cole)) rowe else x$cole
+
+  list(rowe = rowe,
+       cole = cole)
+}
+
+.gexp_rowe_cole_fe <- function(x, n)
+{
+  rowe <- if (is.null(x$rowe)) rep(1, n) else x$rowe
+  cole <- if (is.null(x$cole)) rowe else x$cole
+
+  list(rowe = rowe,
+       cole = cole)
+}
+
+.gexp_rowcolumn_setup <- function(x, rowe, cole, contrast)
+{
+  rowcolumn <- list()
+
+  if (is.null(x$rowl)) {
+    rowcolumn$Row <- factor(1:dim(as.matrix(rowe))[1])
+    contrast[["Row"]] <- diag(dim(as.matrix(rowe))[1])
+  } else {
+    rowcolumn[[names(x$rowl)]] <- factor(unlist(x$rowl))
+    contrast[[names(x$rowl)]] <- diag(dim(as.matrix(rowe))[1])
+  }
+
+  if (is.null(x$coll)) {
+    rowcolumn$Column <- factor(1:dim(as.matrix(cole))[1])
+    contrast[["Column"]] <- diag(dim(as.matrix(cole))[1])
+  } else {
+    rowcolumn[[names(x$coll)]] <- factor(unlist(x$coll))
+    contrast[[names(x$coll)]] <- diag(dim(as.matrix(cole))[1])
+  }
+
+  list(rowcolumn = rowcolumn,
+       contrast  = contrast)
+}
+
+.gexp_lsd_force_r1 <- function(x)
+{
+  if (x$r != 1) {
+    x$r <- 1
+    warning('Internaly replicates was set to one (r=1)!')
+  }
+
+  x
+}

@@ -1,22 +1,13 @@
 gexp.simple_crd <- function(x, ...)
 {
-  ifelse(is.null(x$fe),
-         fe <- list(f1 = rep(1,
-                             3)),
-         fe <- x$fe)
+  fe <- .gexp_fe(x,
+                 list(f1 = rep(1, 3)))
 
   factors <- list(r = 1:x$r)
 
-  treatments <- makeTreatments(fl        = x$fl,
-                               fe        = fe,
-                               quali     = x$qualiquanti$quali,
-                               quanti    = x$qualiquanti$quanti,
-                               posquanti = x$qualiquanti$posquanti)
+  treatments <- .gexp_treatments(x, fe)
 
-  contrast <- makeContrasts(factors   = treatments,
-                            quali     = x$qualiquanti$quali,
-                            quanti    = x$qualiquanti$quanti,
-                            posquanti = x$qualiquanti$posquanti)
+  contrast <- .gexp_treatment_contrasts(x, treatments)
 
   contrasts <- .gexp_contrasts_merge(contrast, x)
 

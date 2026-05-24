@@ -6,6 +6,7 @@
 
 ### Internal
 - Added `R/gexp-utils.R` with shared helpers for error simulation, response assembly, data-frame binding, result packing, and contrast merging; all nine `gexp.*` methods now call these helpers (no change in exported behaviour).
+- Extended `gexp-utils.R` with helpers for default fixed effects, block effects, treatment/contrast construction, row/column LSD layout, and interaction terms; RCBD and LSD methods now use these (behaviour unchanged).
 
 ### Code style
 - Reformatted all sources under `R/` for readability (aligned named arguments, consistent spacing, and line breaks at commas) without changing program logic.

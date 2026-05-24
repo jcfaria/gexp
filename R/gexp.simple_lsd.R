@@ -1,61 +1,27 @@
 gexp.simple_lsd <- function(x, ...)
 {
-  ifelse(is.null(x$fe),
-         fe <- list(f1 = rep(1,
-                             3)),
-         fe <- x$fe)
+  fe <- .gexp_fe(x,
+                 list(f1 = rep(1, 3)))
 
-  ifelse(is.null(x$rowe),
-         rowe <- unlist(fe),
-         rowe <- x$rowe)
-
-  ifelse(is.null(x$cole),
-         cole <- rowe,
-         cole <- x$cole)
+  rc <- .gexp_rowe_cole_simple(x, fe)
+  rowe <- rc$rowe
+  cole <- rc$cole
 
   if (length(fe) != 1) {
     stop('Use only one factor!')
   }
 
-  if (x$r != 1) {
-    x$r <- 1
-    warning('Internaly replicates was set to one (r=1)!')
-  }
+  x <- .gexp_lsd_force_r1(x)
 
-  treatments <- makeTreatments(fl        = x$fl,
-                               fe        = fe,
-                               quali     = x$qualiquanti$quali,
-                               quanti    = x$qualiquanti$quanti,
-                               posquanti = x$qualiquanti$posquanti)
+  treatments <- .gexp_treatments(x, fe)
 
-  contrast <- makeContrasts(factors   = treatments,
-                            quali     = x$qualiquanti$quali,
-                            quanti    = x$qualiquanti$quanti,
-                            posquanti = x$qualiquanti$posquanti)
-
-  rowcolumn <- list()
+  contrast <- .gexp_treatment_contrasts(x, treatments)
 
   n <- length(treatments[[1]])
 
-  ifelse(is.null(x$rowl),
-         {
-           rowcolumn$Row <- factor(1:dim(as.matrix(rowe))[1])
-           contrast[["Row"]] <- diag(dim(as.matrix(rowe))[1])
-         },
-         {
-           rowcolumn[[names(x$rowl)]] <- factor(unlist(x$rowl))
-           contrast[[names(x$rowl)]] <- diag(dim(as.matrix(rowe))[1])
-         })
-
-  ifelse(is.null(x$coll),
-         {
-           rowcolumn$Column <- factor(1:dim(as.matrix(cole))[1])
-           contrast[["Column"]] <- diag(dim(as.matrix(cole))[1])
-         },
-         {
-           rowcolumn[[names(x$coll)]] <- factor(unlist(x$coll))
-           contrast[[names(x$coll)]] <- diag(dim(as.matrix(cole))[1])
-         })
+  lsd <- .gexp_rowcolumn_setup(x, rowe, cole, contrast)
+  rowcolumn <- lsd$rowcolumn
+  contrast <- lsd$contrast
 
   contrasts <- .gexp_contrasts_merge(contrast, x)
 

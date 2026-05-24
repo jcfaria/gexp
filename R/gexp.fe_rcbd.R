@@ -1,44 +1,23 @@
 gexp.fe_rcbd <- function(x, ...)
 {
-  ifelse(is.null(x$fe),
-         fe <- list(f1 = rep(1,
-                             3),
-                    f2 = rep(1,
-                             2)),
-         fe <- x$fe)
+  fe <- .gexp_fe(x,
+                 list(f1 = rep(1, 3),
+                      f2 = rep(1, 2)))
 
-  ifelse(is.null(x$blke),
-         blke <- rep(1,
-                     3),
-         blke <- x$blke)
+  blke <- .gexp_blke(x)
 
   factors <- list(r = 1:x$r)
   contrast <- list()
 
-  ifelse(is.null(x$blkl),
-         {
-           factors$Block <- factor(1:dim(as.matrix(blke))[1])
-           contrast[["Block"]] <- diag(dim(as.matrix(blke))[1])
-         },
-         {
-           factors[[names(x$blkl)]] <- factor(unlist(x$blkl))
-           contrast[[names(x$blkl)]] <- diag(dim(as.matrix(blke))[1])
-         })
+  blk <- .gexp_block_setup(x, blke, factors, contrast)
+  factors <- blk$factors
+  contrast <- blk$contrast
 
-  intee <- makeInteraction(mu   = x$mu,
-                           fe   = fe,
-                           inte = x$inte)
+  intee <- .gexp_inte(x, fe)
 
-  treatments <- makeTreatments(fl        = x$fl,
-                               fe        = fe,
-                               quali     = x$qualiquanti$quali,
-                               quanti    = x$qualiquanti$quanti,
-                               posquanti = x$qualiquanti$posquanti)
+  treatments <- .gexp_treatments(x, fe)
 
-  contrasttreatments <- makeContrasts(factors   = treatments,
-                                      quali     = x$qualiquanti$quali,
-                                      quanti    = x$qualiquanti$quanti,
-                                      posquanti = x$qualiquanti$posquanti)
+  contrasttreatments <- .gexp_treatment_contrasts(x, treatments)
 
   contrast <- c(contrast,
                 contrasttreatments)

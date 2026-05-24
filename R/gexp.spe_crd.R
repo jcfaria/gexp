@@ -1,28 +1,16 @@
 gexp.spe_crd <- function(x, ...)
 {
-  ifelse(is.null(x$fe),
-         fe <- list(f1 = rep(1,
-                             3),
-                    f2 = rep(1,
-                             2)),
-         fe <- x$fe)
+  fe <- .gexp_fe(x,
+                 list(f1 = rep(1, 3),
+                      f2 = rep(1, 2)))
 
   factors <- list(r = factor(1:x$r))
 
-  intee <- makeInteraction(mu   = x$mu,
-                           fe   = fe,
-                           inte = x$inte)
+  intee <- .gexp_inte(x, fe)
 
-  treatments <- makeTreatments(fl        = x$fl,
-                               fe        = fe,
-                               quali     = x$qualiquanti$quali,
-                               quanti    = x$qualiquanti$quanti,
-                               posquanti = x$qualiquanti$posquanti)
+  treatments <- .gexp_treatments(x, fe)
 
-  contrast <- makeContrasts(factors   = treatments,
-                            quali     = x$qualiquanti$quali,
-                            quanti    = x$qualiquanti$quanti,
-                            posquanti = x$qualiquanti$posquanti)
+  contrast <- .gexp_treatment_contrasts(x, treatments)
 
   contrasts <- .gexp_contrasts_merge(contrast, x)
 

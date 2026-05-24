@@ -207,7 +207,7 @@ With the `gexp` package:
 library(gexp)
 crd <- gexp(mu = 15,
             err = matrix(rep(0, 6),
-                          nrow = 6),
+                         nrow = 6),
             r = 3,
             fe = list(alpha = c(1, -2)))
 summary(crd)
@@ -343,7 +343,7 @@ crd_mv <- gexp(mu = c(15, 6),
                             ncol = 2),
                r = 3L,
                fe = list(alpha = matrix(c(1, -2,
-                                           2, 3),
+                                          2, 3),
                                          ncol = 2)))
 summary(crd_mv)
 ```
@@ -477,7 +477,7 @@ With the `gexp` package:
 rcbd <- gexp(mu = 15,
              r = 1,
              err = matrix(rep(0, 6),
-                             nrow = 6),
+                          nrow = 6),
              fe = list(alpha = c(1, -2)),
              blke = c(2, 4, 6),
              design = 'RCBD')
@@ -648,7 +648,7 @@ With the `gexp` package:
 lsd <- gexp(mu = 15,
             r = 1,
             err = matrix(rep(0, 9),
-                            nrow = 9),
+                         nrow = 9),
             fe = list(alpha = c(1, -2, 3)),
             rowe = c(2, 3, 4),
             cole = c(6, 7, 8),
@@ -852,9 +852,9 @@ With the `gexp` package:
 FE_crd <- gexp(mu = 15,
                r = 2,
                err = matrix(rep(0, 12),
-                             nrow = 12),
+                            nrow = 12),
                fe = list(alpha = c(1, -2),
-                           tau = c(1, -1, 1)),
+                         tau = c(1, -1, 1)),
                inte = c(3, 1, 1,
                         -5, 1, 1),
                type = 'FE')
@@ -1140,12 +1140,12 @@ With the `gexp` package:
 ```{r}
 SPE_crd <- gexp(mu = 15,
                 err = matrix(rep(0, 12),
-                              nrow = 12),
+                             nrow = 12),
                 errp = matrix(rep(0, 6),
                               nrow = 6),
                 r = 3,
                 fe = list(alpha = c(1, -2),
-                            tau = c(1, -1)),
+                          tau = c(1, -1)),
                 inte = c(3, 1, 1, -5),
                 type = 'SPE')
 summary(SPE_crd)
@@ -1337,7 +1337,7 @@ cont_crd <- matrix(c(level,
 crd_l <- gexp(mu = 2,
               r = 3,
               err = matrix(rep(0, 12),
-                                 nrow = 12),
+                           nrow = 12),
               fe = list(f1 = c(3, 0, 0)),
               fl = list(dose = level),
               contrasts = list(dose = cont_crd))
@@ -1505,7 +1505,7 @@ With the `gexp` package:
 crd_q <- gexp(mu = 2,
               r = 3,
               err = matrix(rep(0, 12),
-                                 nrow = 12),
+                           nrow = 12),
               fe = list(f1 = c(3, 4, 0)),
               fl = list(dose = level),
               contrasts = list(dose = cont_crd))
@@ -1522,7 +1522,7 @@ with(crd_q$dfm,
           xlab = 'dose'))
 axis(1, pos = 0)
 axis(2, pos = 0)
-curve(2+3*x+4*x^2, col = 'red', lty = 2, add=T)
+curve(2+3*x+4*x^2, col = 'red', lty = 2, add = TRUE)
 text(-0.5, 2, '2', col = 'red', xpd = TRUE)
 ``` 
 
@@ -1822,11 +1822,11 @@ cont_crd2 <- matrix(c(level2, level2^2, level2^3),
 crd_hb <- gexp(mu = 1,
                r = 2,
                err = matrix(rep(0, 32),
-                                  nrow = 32),
+                            nrow = 32),
                fe = list(f1 = c(3, 0, 0),
-                                f2 = c(2, 0, 0)),
+                         f2 = c(2, 0, 0)),
                fl = list(N = level,
-                                P = level2),
+                         P = level2),
                inte = c(6, 0, 0, 0, 0, 0, 0, 0, 0),
                contrasts = list(N = cont_crd,
                                 P = cont_crd2),
@@ -1858,11 +1858,11 @@ Let's omit matrix algebra as it is analogous to the one presented above. Conside
 crd_hb2 <- gexp(mu = 1,
                 r = 2,
                 err = matrix(rep(0, 32),
-                                   nrow = 32),
+                             nrow = 32),
                 fe = list(f1 = c(3, 2, 0),
-                                 f2 = c(2, 3, 0)),
+                          f2 = c(2, 3, 0)),
                 fl = list(N = level,
-                                 P = level2),
+                          P = level2),
                 inte = c(2, 1, 0, 1, 8, 0, 0, 0, 0),
                 contrasts = list(N = cont_crd,
                                  P = cont_crd2),

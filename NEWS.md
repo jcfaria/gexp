@@ -1,10 +1,11 @@
-<!-- José Cláudio Faria; Ivan Bezerra Allaman -->
+<!-- Faria, J. C.; Allaman, I. B. -->
 
 # News - gexp R package
 
 ## 1.1-0 (2026-05-23) - Faria, J. C.
 
 ### Documentation
+- Standardized author names to scientific notation (`Faria, J. C.`; `Allaman, I. B.`) across the package.
 - Migrated package history from `ChangeLog` to `NEWS.md`.
 - Refactored `README.md` to match the documentation standard used in sibling packages (badges, features, installation, quick start, project layout, contributing, and roadmap).
 - Updated `DESCRIPTION` metadata (`Authors@R`, `BugReports`, reformatted `Description`, `License: GPL-2`, `R (>= 4.1.0)`).

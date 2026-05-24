@@ -125,7 +125,7 @@ gexp.spe_rcbd <- function(x,
 
   Y <- round(yl,
              x$round)
-  #J.C.Faria
+  # Faria, J. C.
   if(!x$qualiquanti$quali){
     dados <- lapply(dados, 
                     function(x) if(is.ordered(factor(x))) as.numeric(as.character(x)) else x)

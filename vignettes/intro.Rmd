@@ -1,6 +1,6 @@
 ---
 title: "An introduction to gexp package"
-author: "Ivan Bezerra Allaman </br> José Cláudio Faria"
+author: "Allaman, I. B. </br> Faria, J. C."
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-The `gexp` package was elaborated inspired by the personal functions of Professor José Cláudio Faria, whose objective is to generate one or **p** random variables according to the type of experiment, whose effects of the treatments are indicated by the user.
+The `gexp` package was elaborated inspired by the personal functions of Professor Faria, J. C., whose objective is to generate one or **p** random variables according to the type of experiment, whose effects of the treatments are indicated by the user.
 
 Most packages like agricolae, for example, have functions that allow the user to generate only designs, thus helping the researcher who wants to set up an experiment. However, if the user has the interest in generating random variables according to the type of experiment and still, being able to manipulate which treatments will be different, then the `gexp` package has this differential.
 

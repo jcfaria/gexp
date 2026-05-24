@@ -1,4 +1,4 @@
-<!-- José Cláudio Faria; Ivan Bezerra Allaman -->
+<!-- Faria, J. C.; Allaman, I. B. -->
 # gexp
 
 <!-- Badges -->

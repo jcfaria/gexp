@@ -40,7 +40,7 @@ makeInteraction <- function(mu,
       inte <- rep(1,
                   resl2)
     } else {
-      if(length(inte) != resl2)    # J.C.Faria
+      if(length(inte) != resl2)    # Faria, J. C.
         stop(paste("The length of the 'inte' argument must be: ", 
                    resl2,
                    sep = '')) 
@@ -51,7 +51,7 @@ makeInteraction <- function(mu,
                          resl2*length(mu)),
                      ncol = length(mu)) 
     } else {
-      if(dim(inte)[1] != resl2)    # J.C.Faria
+      if(dim(inte)[1] != resl2)    # Faria, J. C.
         stop(paste("The length of the 'inte' argument must be: ", 
                    resl2,
                    sep = ''))  

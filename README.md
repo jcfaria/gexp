@@ -38,20 +38,24 @@ remotes::install_github("ivanalaman/gexp")
 ```r
 library(gexp)
 
-# Completely randomized design with two treatment levels
-crd <- gexp(
-  mu  = 15,
-  err = matrix(0, nrow = 6, ncol = 1),
-  r   = 3,
-  fe  = list(alpha = c(1, -2))
-)
-summary(crd)
-plot(crd)
+# SIMPLE + RCBD: fe (effects) before fl (labels) for each factor;
+# blke (block effects) before blkl (block labels)
+rcbd <- gexp(mu     = 10,
+             err    = matrix(0, nrow = 12, ncol = 1),
+             r      = 2,
+             fe     = list(trt = c(1, -2)),
+             fl     = list(trt = paste0("t", 1:2)),
+             blke   = c(0, 1, 2),
+             blkl   = list(blk = paste0("b", 1:3)),
+             type   = "SIMPLE",
+             design = "RCBD")
+
+print(rcbd)
+summary(rcbd)
+plot(rcbd)
 ```
 
-For more complete examples, see:
-
-- `vignette("gexp-overview", package = "gexp")`
+Same example as `demo("simple-rcbd")`. For more detail, see `vignette("gexp-overview", package = "gexp")`.
 
 ## Demos
 

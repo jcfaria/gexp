@@ -18,6 +18,7 @@
 
 ### Infrastructure
 - Added `.Rbuildignore` to exclude version-control and check artefacts from package builds.
+- Added `.gitignore` and `.Rbuildignore` rules to keep locally rendered `vignettes/*.html` out of the repository.
 - Added a `testthat` suite under `tests/testthat/` with smoke tests for core design generation, `summary`, `print`, and `plot`.
 
 ## 1.0-21 (2023-06-14) - Allaman, I. B.

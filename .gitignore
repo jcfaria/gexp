@@ -1,0 +1,2 @@
+# Local vignette preview (rmarkdown::render)
+vignettes/*.html

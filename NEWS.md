@@ -6,6 +6,7 @@
 
 ### Documentation
 - Migrated package history from `ChangeLog` to `NEWS.md`.
+- Refactored `README.md` to match the documentation standard used in sibling packages (badges, features, installation, quick start, project layout, contributing, and roadmap).
 
 ## 1.0-21 (2023-06-14) - Allaman, I. B.
 

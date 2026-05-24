@@ -51,7 +51,7 @@ plot(crd)
 
 For more complete examples, see:
 
-- `vignette("intro", package = "gexp")`
+- `vignette("gexp-overview", package = "gexp")`
 
 ## Project Layout
 

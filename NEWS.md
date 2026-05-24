@@ -8,7 +8,7 @@
 - Standardized author names to scientific notation (`Faria, J. C.`; `Allaman, I. B.`) across the package.
 - Migrated package history from `ChangeLog` to `NEWS.md`.
 - Refactored `README.md` to match the documentation standard used in sibling packages (badges, features, installation, quick start, project layout, contributing, and roadmap).
-- Updated `DESCRIPTION` metadata (`Authors@R`, `BugReports`, reformatted `Description`, `License: GPL-2`, `R (>= 4.1.0)`).
+- Updated `DESCRIPTION` metadata (`Authors@R`, `BugReports`, reformatted `Description`, `License: GPL-2`, `R (>= 4.1.0)`); maintainer remains Allaman, I. B.
 - Removed prebuilt vignette artifact `inst/doc/intro.html` from the repository.
 
 ### Infrastructure

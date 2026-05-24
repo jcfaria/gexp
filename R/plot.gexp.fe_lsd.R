@@ -36,11 +36,11 @@ plot.gexp.fe_lsd <- function(x,
 
   repp <- dim(x$X)[1]/(length(levelsrow))
 
-  if(is.null(main)){
+  if (is.null(main)) {
     main = 'Factorial Structure: Latin Square Design'
   }
 
-  if(is.null(sub)){
+  if (is.null(sub)) {
     sub <- paste('Factors: ',
                  paste(labelfac,
                        collapse = ', '),
@@ -77,14 +77,14 @@ plot.gexp.fe_lsd <- function(x,
 
   aux_posxcentro <- 1/rowsquare
   aux_posxcentro1 <- aux_posxcentro + ((rowsquare - 1)*2/rowsquare)
-  posxcentro <- posycentro <- seq(aux_posxcentro, 
-                                  aux_posxcentro1, 
+  posxcentro <- posycentro <- seq(aux_posxcentro,
+                                  aux_posxcentro1,
                                   by = 2/rowsquare)
 
-  if(!dynamic){ 
+  if (!dynamic) {
     op <- par('xaxs', 'yaxs') # Original par('xaxs', 'yaxs')
 
-    par(xaxs = 'i', 
+    par(xaxs = 'i',
         yaxs = 'i')
 
     plot(1,
@@ -107,36 +107,36 @@ plot.gexp.fe_lsd <- function(x,
          lwd = lwdgrid)
 
     text(x = rep(posycentro, length(posxcentro)),
-         y = rep(posxcentro, rep(length(posycentro), 
-                                 length(posxcentro))), 
+         y = rep(posxcentro, rep(length(posycentro),
+                                 length(posxcentro))),
          treat,
          col = coltext)
 
     arrows(-0.05,
            seq(0,
-               2, 
+               2,
                by = 2/rowsquare),
            -0.05,
-           seq(2/rowsquare, 
-               2, 
+           seq(2/rowsquare,
+               2,
                by = 2/rowsquare),
            angle = 90,
            xpd = TRUE,
            code = 3,
-           length = 0.06) 
+           length = 0.06)
 
-    arrows(seq(0, 
-               2, 
+    arrows(seq(0,
+               2,
                by = 2/rowsquare),
            2.05,
-           seq(2/rowsquare, 
-               2, 
+           seq(2/rowsquare,
+               2,
                by = 2/rowsquare),
            2.05,
            angle = 90,
            xpd = TRUE,
            code = 3,
-           length = 0.06) 
+           length = 0.06)
 
     text(-0.08,
          posxcentro,
@@ -154,9 +154,9 @@ plot.gexp.fe_lsd <- function(x,
   } else {
     auxin <- tcltk::tk_choose.files()
 
-    auxin1 <- gsub('[\\s\\S]*?\\.', 
-                   '', 
-                   auxin, 
+    auxin1 <- gsub('[\\s\\S]*?\\.',
+                   '',
+                   auxin,
                    perl = TRUE)
 
     auxin2 <- toupper(auxin1)
@@ -170,7 +170,7 @@ plot.gexp.fe_lsd <- function(x,
            },
            JPG = {
              myimage <- jpeg::readJPEG(auxin)
-           }) 
+           })
 
     plot(1,
          type = 'n',
@@ -181,27 +181,27 @@ plot.gexp.fe_lsd <- function(x,
          sub = sub,
          ...)
 
-    rasterImage(myimage, 
-                xleft = xleftimg, 
-                ybottom = ybottomimg, 
-                xright = xrightimg, 
-                ytop = ytopimg) 
+    rasterImage(myimage,
+                xleft = xleftimg,
+                ybottom = ybottomimg,
+                xright = xrightimg,
+                ytop = ytopimg)
 
     text(x = locator(),
          y = NULL,
-         paste(labelrow, 
-               1:rowsquare), 
+         paste(labelrow,
+               1:rowsquare),
          col = coltext)
 
     text(x = locator(),
          y = NULL,
-         paste(labelcol, 
-               1:columsquare), 
-         col = coltext) 
+         paste(labelcol,
+               1:columsquare),
+         col = coltext)
 
     text(x = locator(),
          y = NULL,
          treat,
-         col = coltext) 
+         col = coltext)
   }
 }

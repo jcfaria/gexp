@@ -1,15 +1,14 @@
-gexp.spe_rcbd <- function(x,
-                          ...)
+gexp.spe_rcbd <- function(x, ...)
 {
   ifelse(is.null(x$fe),
-         fe <- list(f1 = rep(1, 
+         fe <- list(f1 = rep(1,
                              3),
                     f2 = rep(1,
                              2)),
          fe <- x$fe)
 
   ifelse(is.null(x$blke),
-         blke <- rep(1, 
+         blke <- rep(1,
                      3),
          blke <- x$blke)
 
@@ -19,35 +18,35 @@ gexp.spe_rcbd <- function(x,
   ifelse(is.null(x$blkl),
          {
            factors$Block <- factor(1:dim(as.matrix(blke))[1])
-           contrast[["Block"]] <- diag(dim(as.matrix(blke))[1]) 
+           contrast[["Block"]] <- diag(dim(as.matrix(blke))[1])
          },
          {
            factors[[names(x$blkl)]] <- factor(unlist(x$blkl))
-           contrast[[names(x$blkl)]] <- diag(dim(as.matrix(blke))[1]) 
-         })                                
+           contrast[[names(x$blkl)]] <- diag(dim(as.matrix(blke))[1])
+         })
 
-  intee <- makeInteraction(mu = x$mu,
-                           fe = fe,
-                           inte = x$inte)#Preparando o argumento inte dos efeitos da interacao
+  intee <- makeInteraction(mu   = x$mu,
+                           fe   = fe,
+                           inte = x$inte)
 
-  treatments <- makeTreatments(fl = x$fl,
-                               fe = fe,
-                               quali = x$qualiquanti$quali,
-                               quanti = x$qualiquanti$quanti,
+  treatments <- makeTreatments(fl        = x$fl,
+                               fe        = fe,
+                               quali     = x$qualiquanti$quali,
+                               quanti    = x$qualiquanti$quanti,
                                posquanti = x$qualiquanti$posquanti)
 
-  contrasttreatments <- makeContrasts(factors = treatments,
-                                      quali = x$qualiquanti$quali,
-                                      quanti = x$qualiquanti$quanti,
+  contrasttreatments <- makeContrasts(factors   = treatments,
+                                      quali     = x$qualiquanti$quali,
+                                      quanti    = x$qualiquanti$quanti,
                                       posquanti = x$qualiquanti$posquanti)
 
   contrast <- c(contrast,
-                contrasttreatments)  
+                contrasttreatments)
 
-  if(!is.null(x$contrasts)){
+  if (!is.null(x$contrasts)) {
     contrast[names(x$contrasts)] <- x$contrasts
     contrasts <- contrast
-  }else{
+  } else {
     contrasts <- contrast
   }
 
@@ -58,19 +57,19 @@ gexp.spe_rcbd <- function(x,
                     names(factors)[2],
                     '+',
                     paste(names(treatments),
-                          collapse = '*'))                         
+                          collapse = '*'))
 
   dados <- expand.grid(factors,
-                       KEEP.OUT.ATTRS = FALSE)#montando o data.frame
+                       KEEP.OUT.ATTRS = FALSE)
 
-  XB <- makeXBeta(cformula, 
-                  dados, 
-                  mu = x$mu, 
-                  fe = fe,
-                  blke = blke, 
-                  rowe = x$rowe,
-                  cole = x$cole, 
-                  inte = intee, 
+  XB <- makeXBeta(cformula,
+                  dados,
+                  mu        = x$mu,
+                  fe        = fe,
+                  blke      = blke,
+                  rowe      = x$rowe,
+                  cole      = x$cole,
+                  inte      = intee,
                   contrasts = contrasts)
 
   facplott <- names(treatments)[1]
@@ -80,44 +79,44 @@ gexp.spe_rcbd <- function(x,
                               names(factors)[2],
                               sep = ':'))
 
-  plott <- c(facplott, 
+  plott <- c(facplott,
              names(factors)[2])
 
-  zformula <-  paste('list(',
-                     paste(plott,
-                           paste('= contrasts(dados$',
-                                 plott,
-                                 sep = ''),
-                           ',',
-                           'contrasts = FALSE)',
-                           collapse = ','),
-                     ')') 
+  zformula <- paste('list(',
+                    paste(plott,
+                          paste('= contrasts(dados$',
+                                plott,
+                                sep = ''),
+                          ',',
+                          'contrasts = FALSE)',
+                          collapse = ','),
+                    ')')
 
   Z <- model.matrix(eval(parse(text = cformulaplot)),
                     dados,
                     contrasts.arg = eval(parse(text = zformula)))
 
-  if(is.null(x$err)){
-    e <- mvtnorm::rmvnorm(n = dim(XB$XB)[1],
+  if (is.null(x$err)) {
+    e <- mvtnorm::rmvnorm(n     = dim(XB$XB)[1],
                           sigma = diag(length(x$mu)))
-  }else{
-    if(!is.matrix(x$err))
+  } else {
+    if (!is.matrix(x$err))
       stop("This argument must be a matrix n x 1 univariate or n x p multivariate!")
 
     e <- x$err
   }
 
-  if(is.null(x$errp)){
-    e_plot <- mvtnorm::rmvnorm(n = dim(Z)[2],
+  if (is.null(x$errp)) {
+    e_plot <- mvtnorm::rmvnorm(n     = dim(Z)[2],
                                sigma = diag(length(x$mu)))
   } else {
-    if(!is.matrix(x$errp))
+    if (!is.matrix(x$errp))
       stop("This argument must be a matrix n x 1 univariate or n x p multivariate!")
 
     e_plot <- x$errp
-  }   
+  }
 
-  yl <- XB$XB + Z%*%e_plot + e
+  yl <- XB$XB + Z %*% e_plot + e
 
   colnames(yl) <- paste('Y',
                         1:dim(yl)[2],
@@ -125,20 +124,23 @@ gexp.spe_rcbd <- function(x,
 
   Y <- round(yl,
              x$round)
-  # Faria, J. C.
-  if(!x$qualiquanti$quali){
-    dados <- lapply(dados, 
-                    function(x) if(is.ordered(factor(x))) as.numeric(as.character(x)) else x)
 
-    dados <- as.data.frame(dados)                
-  }                  
+  # Faria, J. C.
+  if (!x$qualiquanti$quali) {
+    dados <- lapply(dados,
+                    function(x) {
+                      if (is.ordered(factor(x))) as.numeric(as.character(x)) else x
+                    })
+
+    dados <- as.data.frame(dados)
+  }
 
   dados <- cbind(dados,
                  Y)
 
-  res <- list(X = XB$X,
-              Z = Z,
-              Y = Y,
+  res <- list(X   = XB$X,
+              Z   = Z,
+              Y   = Y,
               dfm = dados)
 
   class(res) <- c(paste('gexp',
@@ -147,5 +149,5 @@ gexp.spe_rcbd <- function(x,
                   'gexp',
                   'list')
 
-  return(res)   
+  return(res)
 }

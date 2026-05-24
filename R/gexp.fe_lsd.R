@@ -1,38 +1,37 @@
-gexp.fe_lsd <- function(x,
-                        ...) 
+gexp.fe_lsd <- function(x, ...)
 {
   ifelse(is.null(x$fe),
-         fe <- list(f1 = rep(1, 
+         fe <- list(f1 = rep(1,
                              3),
                     f2 = rep(1,
                              2)),
          fe <- x$fe)
 
-  if(x$r != 1){
+  if (x$r != 1) {
     x$r <- 1
     warning('Internaly replicates was set to one (r=1)!')
   }
 
-  intee <- makeInteraction(mu = x$mu,
-                           fe = fe,
-                           inte = x$inte)#Preparando o argumento inte dos efeitos da interacao
+  intee <- makeInteraction(mu   = x$mu,
+                           fe   = fe,
+                           inte = x$inte)
 
-  treatments <- makeTreatments(fl = x$fl,
-                               fe = fe,
-                               quali = x$qualiquanti$quali,
-                               quanti = x$qualiquanti$quanti,
+  treatments <- makeTreatments(fl        = x$fl,
+                               fe        = fe,
+                               quali     = x$qualiquanti$quali,
+                               quanti    = x$qualiquanti$quanti,
                                posquanti = x$qualiquanti$posquanti)
 
-  contrast <- makeContrasts(factors = treatments,
-                            quali = x$qualiquanti$quali,
-                            quanti = x$qualiquanti$quanti,
+  contrast <- makeContrasts(factors   = treatments,
+                            quali     = x$qualiquanti$quali,
+                            quanti    = x$qualiquanti$quanti,
                             posquanti = x$qualiquanti$posquanti)
 
   n <- prod(unlist(lapply(treatments,
                           length)))
 
   ifelse(is.null(x$rowe),
-         rowe <- rep(1,n),
+         rowe <- rep(1, n),
          rowe <- x$rowe)
 
   ifelse(is.null(x$cole),
@@ -43,17 +42,17 @@ gexp.fe_lsd <- function(x,
 
   ifelse(is.null(x$rowl),
          {
-           rowcolumn$Row <- factor(1:dim(as.matrix(rowe))[1])  
-           contrast[["Row"]] <- diag(dim(as.matrix(rowe))[1])  
+           rowcolumn$Row <- factor(1:dim(as.matrix(rowe))[1])
+           contrast[["Row"]] <- diag(dim(as.matrix(rowe))[1])
          },
          {
-           rowcolumn[[names(x$rowl)]] <-factor(unlist(x$rowl))
-           contrast[[names(x$rowl)]] <- diag(dim(as.matrix(rowe))[1])    
+           rowcolumn[[names(x$rowl)]] <- factor(unlist(x$rowl))
+           contrast[[names(x$rowl)]] <- diag(dim(as.matrix(rowe))[1])
          })
 
   ifelse(is.null(x$coll),
          {
-           rowcolumn$Column <- factor(1:dim(as.matrix(cole))[1]) 
+           rowcolumn$Column <- factor(1:dim(as.matrix(cole))[1])
            contrast[["Column"]] <- diag(dim(as.matrix(cole))[1])
          },
          {
@@ -61,10 +60,10 @@ gexp.fe_lsd <- function(x,
            contrast[[names(x$coll)]] <- diag(dim(as.matrix(cole))[1])
          })
 
-  if(!is.null(x$contrasts)){
+  if (!is.null(x$contrasts)) {
     contrast[names(x$contrasts)] <- x$contrasts
     contrasts <- contrast
-  }else{
+  } else {
     contrasts <- contrast
   }
 
@@ -77,50 +76,51 @@ gexp.fe_lsd <- function(x,
                           collapse = '+'),
                     '+',
                     paste(names(treatments),
-                          collapse = '*'))                         
+                          collapse = '*'))
 
   sorttreatment <- latin(n,
                          levelss = levelsfactors,
-                         nrand = 0) 
+                         nrand   = 0)
 
   mtreatments <- as.matrix(c(sorttreatment))
 
-  splittreatments <- strsplit(as.character(mtreatments[, 1]), 
+  splittreatments <- strsplit(as.character(mtreatments[, 1]),
                               '[.]')
   trats <- do.call('rbind',
-   splittreatments)
+                   splittreatments)
 
-  colnames(trats) <- names(treatments) 
+  colnames(trats) <- names(treatments)
 
-  trats <- as.data.frame(trats,stringsAsFactors = TRUE)
+  trats <- as.data.frame(trats,
+                         stringsAsFactors = TRUE)
 
-  if(!x$qualiquanti$quali){
-    trats[,x$qualiquanti$posquanti] <- as.ordered(trats[,x$qualiquanti$posquanti])
+  if (!x$qualiquanti$quali) {
+    trats[, x$qualiquanti$posquanti] <- as.ordered(trats[, x$qualiquanti$posquanti])
   }
 
   combrowcolumn <- expand.grid(rowcolumn,
                                KEEP.OUT.ATTRS = FALSE)
 
   dados <- data.frame(combrowcolumn,
-   trats)
+                      trats)
 
-  XB <- makeXBeta(cformula, 
-                  dados, 
-                  mu = x$mu, 
-                  fe = fe,
-                  blke = x$blke, 
-                  rowe = rowe,
-                  cole = cole, 
-                  inte = intee, 
+  XB <- makeXBeta(cformula,
+                  dados,
+                  mu        = x$mu,
+                  fe        = fe,
+                  blke      = x$blke,
+                  rowe      = rowe,
+                  cole      = cole,
+                  inte      = intee,
                   contrasts = contrasts)
 
   Z <- NULL
 
-  if(is.null(x$err)){
-    e <- mvtnorm::rmvnorm(n = dim(XB$XB)[1],
+  if (is.null(x$err)) {
+    e <- mvtnorm::rmvnorm(n     = dim(XB$XB)[1],
                           sigma = diag(length(x$mu)))
-  }else{
-    if(!is.matrix(x$err))
+  } else {
+    if (!is.matrix(x$err))
       stop("This argument must be a matrix n x 1 univariate or n x p multivariate!")
 
     e <- x$err
@@ -136,19 +136,21 @@ gexp.fe_lsd <- function(x,
              x$round)
 
   # Faria, J. C.
-  if(!x$qualiquanti$quali){
-    dados <- lapply(dados, 
-                    function(x) if(is.ordered(factor(x))) as.numeric(as.character(x)) else x)
+  if (!x$qualiquanti$quali) {
+    dados <- lapply(dados,
+                    function(x) {
+                      if (is.ordered(factor(x))) as.numeric(as.character(x)) else x
+                    })
 
-    dados <- as.data.frame(dados)                
-  }                  
+    dados <- as.data.frame(dados)
+  }
 
   dados <- cbind(dados,
                  Y)
 
-  res <- list(X = XB$X,
-              Z = Z,
-              Y = Y,
+  res <- list(X   = XB$X,
+              Z   = Z,
+              Y   = Y,
               dfm = dados)
 
   class(res) <- c(paste('gexp',
@@ -157,5 +159,5 @@ gexp.fe_lsd <- function(x,
                   'gexp',
                   'list')
 
-  return(res)  
+  return(res)
 }

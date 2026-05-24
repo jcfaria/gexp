@@ -30,13 +30,13 @@ plot.gexp.fe_rcbd <- function(x,
 
   levelsinter <- levels(labelinter)
 
-  repp <- dim(x$X)[1]/(length(levelsinter)*length(levelsblock)) 
+  repp <- dim(x$X)[1]/(length(levelsinter)*length(levelsblock))
 
-  if(is.null(main)){
+  if (is.null(main)) {
     main = 'Factorial Structure \n Random Completely Block Design'
   }
 
-  if(is.null(sub)){
+  if (is.null(sub)) {
     sub <- paste('Factors: ',
                  paste(labelfac,
                        collapse = ', '),
@@ -52,9 +52,9 @@ plot.gexp.fe_rcbd <- function(x,
                  '\n',
                  paste('Block: ',
                        length(levelsblock),
-                       sep = '')) 
+                       sep = ''))
   }
-  
+
   ifelse(random == FALSE,
          {
            treat <- rep(levelsinter,
@@ -64,39 +64,39 @@ plot.gexp.fe_rcbd <- function(x,
            lblock <- rep(list(rep(levelsinter,
                                   repp)),
                          length(levelsblock))
-          
+
            rtreat <- lapply(lblock,
                             sample)
-           
+
            treat <- unlist(rtreat)
          })
-   
+
   rowsquare <- length(levelsblock)
- 
+
   columsquare <- dim(x$X)[1]/rowsquare
 
   aux_posxcentro <- 1/columsquare
-  
+
   aux_posxcentro1 <- aux_posxcentro + ((columsquare - 1)*2/columsquare)
-  
-  posxcentro <- seq(aux_posxcentro, 
-                    aux_posxcentro1, 
+
+  posxcentro <- seq(aux_posxcentro,
+                    aux_posxcentro1,
                     by = 2/columsquare)
 
   aux_posycentro <- 1/rowsquare
-  
+
   aux_posycentro1 <- aux_posycentro + ((rowsquare - 1)*2/rowsquare)
-  
-  posycentro <- seq(aux_posycentro, 
-                    aux_posycentro1, 
+
+  posycentro <- seq(aux_posycentro,
+                    aux_posycentro1,
                     by = 2/rowsquare)
 
-  if(!dynamic){ 
+  if (!dynamic) {
     op <- par('xaxs', 'yaxs') # Original par('xaxs', 'yaxs')
-    
-    par(xaxs='i', 
+
+    par(xaxs='i',
         yaxs='i')
-    
+
     plot(1,
          type = 'n',
          xlim = c(0, 2),
@@ -107,36 +107,36 @@ plot.gexp.fe_rcbd <- function(x,
          main = main,
          sub = sub,
          ...)
-   
+
     box()
-    
+
     grid(nx = columsquare,
          ny = rowsquare,
          col = colgrid,
          lty = ltygrid,
          lwd = lwdgrid)
 
-    text(x = rep(posxcentro, 
+    text(x = rep(posxcentro,
                  length(posycentro)),
-         y = rep(posycentro, 
-                 rep(length(posxcentro), 
+         y = rep(posycentro,
+                 rep(length(posxcentro),
                      length(posycentro))),
          treat,
          col = coltext,
          srt = 40)
 
     arrows(-0.05,
-           seq(0, 
-               2, 
+           seq(0,
+               2,
                by = 2/rowsquare),
            -0.05,
-           seq(2/rowsquare, 
-               2, 
+           seq(2/rowsquare,
+               2,
                by = 2/rowsquare),
            angle = 90,
            xpd = TRUE,
            code = 3,
-           length = 0.06) 
+           length = 0.06)
 
     text(-0.08,
          posycentro,
@@ -144,16 +144,16 @@ plot.gexp.fe_rcbd <- function(x,
          col = colgrid,
          xpd = TRUE,
          srt = 90)
-   
+
     par(op) # Restoring the original par('xaxs', 'yaxs')
   } else {
     auxin <- tcltk::tk_choose.files()
-   
-    auxin1 <- gsub('[\\s\\S]*?\\.', 
-                   '', 
-                   auxin, 
+
+    auxin1 <- gsub('[\\s\\S]*?\\.',
+                   '',
+                   auxin,
                    perl = TRUE)
-   
+
     auxin2 <- toupper(auxin1)
 
     switch(auxin2,
@@ -165,7 +165,7 @@ plot.gexp.fe_rcbd <- function(x,
            },
            JPG = {
              myimage <- jpeg::readJPEG(auxin)
-           }) 
+           })
 
     plot(1,
          type = 'n',
@@ -176,21 +176,21 @@ plot.gexp.fe_rcbd <- function(x,
          sub = sub,
          ...)
 
-    rasterImage(myimage, 
-                xleft = xleftimg, 
-                ybottom = ybottomimg, 
-                xright = xrightimg, 
-                ytop = ytopimg) 
+    rasterImage(myimage,
+                xleft = xleftimg,
+                ybottom = ybottomimg,
+                xright = xrightimg,
+                ytop = ytopimg)
 
     text(x = locator(),
          y = NULL,
-         paste(labelblock, 
-               1:rowsquare), 
-         col = coltext)  
+         paste(labelblock,
+               1:rowsquare),
+         col = coltext)
 
     text(x = locator(),
          y = NULL,
          treat,
          col = coltext)
-  }    
-} 
+  }
+}

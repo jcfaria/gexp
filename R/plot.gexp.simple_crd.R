@@ -13,8 +13,8 @@ plot.gexp.simple_crd <- function(x,
                                  random     = TRUE,
                                  ...)
 {
-  if(length(attr(x$X, 
-                 'contrasts')) != 1){
+  if (length(attr(x$X,
+                 'contrasts')) != 1) {
     stop('Graphic option only for one factor!')
   }
 
@@ -28,11 +28,11 @@ plot.gexp.simple_crd <- function(x,
 
   repp <- dim(x$X)[1]/length(levelss)
 
-  if(is.null(main)){
+  if (is.null(main)) {
     main = 'Completely Random Design'
   }
 
-  if(is.null(sub)){
+  if (is.null(sub)) {
     s_levels <- paste('Levels: ',
                       paste(levelss,
                             collapse = ', '))
@@ -60,22 +60,22 @@ plot.gexp.simple_crd <- function(x,
 
   aux_posxcentro1 <- aux_posxcentro + ((columsquare - 1)*2/columsquare)
 
-  posxcentro <- seq(aux_posxcentro, 
-                    aux_posxcentro1, 
+  posxcentro <- seq(aux_posxcentro,
+                    aux_posxcentro1,
                     by = 2/columsquare)
 
   aux_posycentro <- 1/rowsquare
 
   aux_posycentro1 <- aux_posycentro + ((rowsquare - 1)*2/rowsquare)
 
-  posycentro <- seq(aux_posycentro, 
-                    aux_posycentro1, 
+  posycentro <- seq(aux_posycentro,
+                    aux_posycentro1,
                     by = 2/rowsquare)
 
-  if(!dynamic){ 
+  if (!dynamic) {
     op <- par('xaxs', 'yaxs') # Original par('xaxs', 'yaxs')
 
-    par(xaxs = 'i', 
+    par(xaxs = 'i',
         yaxs = 'i')
 
     plot(1,
@@ -86,7 +86,7 @@ plot.gexp.simple_crd <- function(x,
          xlab = '',
          ylab = '',
          main = main,
-         sub = sub, 
+         sub = sub,
          ...)
 
     box()
@@ -97,7 +97,7 @@ plot.gexp.simple_crd <- function(x,
          lty = ltygrid,
          lwd = lwdgrid)
 
-    text(x = rep(posxcentro, 
+    text(x = rep(posxcentro,
                  rep(length(posycentro),
                      length(posxcentro))),
          y = rep(posycentro,
@@ -109,9 +109,9 @@ plot.gexp.simple_crd <- function(x,
   } else {
     auxin <- tcltk::tk_choose.files()
 
-    auxin1 <- gsub('[\\s\\S]*?\\.', 
-                   '', 
-                   auxin, 
+    auxin1 <- gsub('[\\s\\S]*?\\.',
+                   '',
+                   auxin,
                    perl = TRUE)
 
     auxin2 <- toupper(auxin1)
@@ -125,7 +125,7 @@ plot.gexp.simple_crd <- function(x,
            },
            JPG = {
              myimage <- jpeg::readJPEG(auxin)
-           }) 
+           })
 
     plot(1,
          type = 'n',
@@ -136,11 +136,11 @@ plot.gexp.simple_crd <- function(x,
          sub = sub,
          ...)
 
-    rasterImage(myimage, 
-                xleft = xleftimg, 
-                ybottom = ybottomimg, 
-                xright = xrightimg, 
-                ytop = ytopimg) 
+    rasterImage(myimage,
+                xleft = xleftimg,
+                ybottom = ybottomimg,
+                xright = xrightimg,
+                ytop = ytopimg)
 
     tcltk::tkmessageBox(message='Click with the left button on experimental unit and end with the right button!')
 

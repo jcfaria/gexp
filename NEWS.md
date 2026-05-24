@@ -4,6 +4,9 @@
 
 ## 1.1-0 (2026-05-23) - Faria, J. C.
 
+### Code style
+- Reformatted all sources under `R/` for readability (aligned named arguments, consistent spacing, and line breaks at commas) without changing program logic.
+
 ### Documentation
 - Standardized author names to scientific notation (`Faria, J. C.`; `Allaman, I. B.`) across the package.
 - Migrated package history from `ChangeLog` to `NEWS.md`.

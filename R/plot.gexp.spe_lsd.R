@@ -1,7 +1,7 @@
 plot.gexp.spe_lsd <- function(x,
                               main       = NULL,
                               sub        = NULL,
-                              colgrid    = 'red',  
+                              colgrid    = 'red',
                               coltext    = 'blue',
                               srttext    = 30,
                               ltygrid    = 'dotted',
@@ -35,11 +35,11 @@ plot.gexp.spe_lsd <- function(x,
 
   levelsinter <- levels(labelinter)
 
-  if(is.null(main)){
+  if (is.null(main)) {
     main = 'Split plot Structure: Latin Square Design'
   }
 
-  if(is.null(sub)){
+  if (is.null(sub)) {
     sub <- paste('Plot: ',
                  labelfac[1],
                  '\n',
@@ -82,8 +82,8 @@ plot.gexp.spe_lsd <- function(x,
            treat <- unlist(rtreat)
 
            Labelsplot <- latin(n = length(levelsrow),
-                               levelss = levelsfac[[1]]) 
-         }) 
+                               levelss = levelsfac[[1]])
+         })
 
   rowsquare <- columsquare <- length(levelsrow)
 
@@ -91,38 +91,38 @@ plot.gexp.spe_lsd <- function(x,
 
   aux_posxcentro1 <- aux_posxcentro + ((rowsquare - 1)*2/rowsquare)
 
-  posxcentro <- seq(aux_posxcentro, 
-                    aux_posxcentro1, 
+  posxcentro <- seq(aux_posxcentro,
+                    aux_posxcentro1,
                     by = 2/rowsquare)
 
   aux_posycentro <- 2/rowsquare*0.9
 
   aux_posycentro1 <- aux_posycentro + ((rowsquare - 1)*2/rowsquare)
 
-  posycentro <- seq(aux_posycentro, 
-                    aux_posycentro1, 
+  posycentro <- seq(aux_posycentro,
+                    aux_posycentro1,
                     by = 2/rowsquare)
 
-  auxsub_posxcentro <- 1/(length(levelsinter)*length(levelsfac[[1]])) 
+  auxsub_posxcentro <- 1/(length(levelsinter)*length(levelsfac[[1]]))
 
   auxsub_posxcentro1 <- auxsub_posxcentro + ((length(levelsinter)*length(levelsfac[[1]]) - 1)*2/(length(levelsinter)*length(levelsfac[[1]])))
 
-  subposxcentro <- seq(auxsub_posxcentro, 
-                       auxsub_posxcentro1, 
+  subposxcentro <- seq(auxsub_posxcentro,
+                       auxsub_posxcentro1,
                        by = 2/(length(levelsinter)*length(levelsfac[[1]])))
 
   auxsub_posycentro <- 1/rowsquare
 
   auxsub_posycentro1 <- auxsub_posycentro + ((rowsquare - 1)*2/rowsquare)
 
-  subposycentro <- seq(auxsub_posycentro, 
-                       auxsub_posycentro1, 
+  subposycentro <- seq(auxsub_posycentro,
+                       auxsub_posycentro1,
                        by = 2/rowsquare)
 
-  if(!dynamic){ 
+  if (!dynamic) {
     op <- par('xaxs', 'yaxs') # Original par('xaxs', 'yaxs')
 
-    par(xaxs = 'i', 
+    par(xaxs = 'i',
         yaxs = 'i')
 
     plot(1,
@@ -147,56 +147,56 @@ plot.gexp.spe_lsd <- function(x,
 
     grid(nx = length(levelsinter)*columsquare,
          ny = 1,
-         col = c(rep(colgrid, 
+         col = c(rep(colgrid,
                      length(levelsinter) - 1),
                  1),
-         lty = c(rep(ltygrid, 
+         lty = c(rep(ltygrid,
                      length(levelsinter) - 1),
                  'solid'),
-         lwd = lwdgrid)   
+         lwd = lwdgrid)
 
-    text(x = rep(posxcentro, 
+    text(x = rep(posxcentro,
                  length(posycentro)),
-         y = rep(posycentro, 
-                 rep(length(posxcentro), 
+         y = rep(posycentro,
+                 rep(length(posxcentro),
                      length(posycentro))),
          Labelsplot,
          col = coltext)
 
-    text(x = rep(subposxcentro, 
+    text(x = rep(subposxcentro,
                  length(subposycentro)),
          y = rep(subposycentro,
-                 rep(length(subposxcentro), 
+                 rep(length(subposxcentro),
                      length(subposycentro))),
          treat,
          srt = srttext,
-         col = colgrid)  
+         col = colgrid)
 
     arrows(-0.05,
-           seq(0, 
-               2, 
+           seq(0,
+               2,
                by = 2/rowsquare),
-           -0.05, 
-           seq(2/rowsquare, 
-               2, 
+           -0.05,
+           seq(2/rowsquare,
+               2,
                by = 2/rowsquare),
            angle = 90,
            xpd = TRUE,
            code = 3,
-           length = 0.06) 
+           length = 0.06)
 
-    arrows(seq(0, 
-               2, 
+    arrows(seq(0,
+               2,
                by = 2/rowsquare),
            2.05,
-           seq(2/rowsquare, 
-               2, 
+           seq(2/rowsquare,
+               2,
                by = 2/rowsquare),
            2.05,
            angle = 90,
            xpd = TRUE,
            code = 3,
-           length = 0.06) 
+           length = 0.06)
 
     text(-0.08,
          posxcentro,
@@ -225,7 +225,7 @@ plot.gexp.spe_lsd <- function(x,
              },
              JPG = {
                myimage <- jpeg::readJPEG(auxin)
-             }) 
+             })
 
       plot(1,
            type = 'n',
@@ -236,38 +236,38 @@ plot.gexp.spe_lsd <- function(x,
            sub  = sub,
            ...)
 
-      rasterImage(myimage, 
-                  xleft = xleftimg, 
-                  ybottom = ybottomimg, 
-                  xright = xrightimg, 
-                  ytop = ytopimg) 
+      rasterImage(myimage,
+                  xleft = xleftimg,
+                  ybottom = ybottomimg,
+                  xright = xrightimg,
+                  ytop = ytopimg)
 
-      tcltk::tkmessageBox(message='Click with the left button on row block and end with the right button!')    
+      tcltk::tkmessageBox(message='Click with the left button on row block and end with the right button!')
 
       text(x = locator(),
            y = NULL,
-           levelsrow, 
+           levelsrow,
            col = coltext)
 
-      tcltk::tkmessageBox(message='Click with the left button on column block and end with the right button!')     
+      tcltk::tkmessageBox(message='Click with the left button on column block and end with the right button!')
 
       text(x = locator(),
            y = NULL,
-           levelscol, 
-           col = coltext) 
-
-      tcltk::tkmessageBox(message='Click with the left button on plot and end with the right button!')     
-
-      text(x = locator(),
-           y = NULL,
-           Labelsplot, 
+           levelscol,
            col = coltext)
 
-      tcltk::tkmessageBox(message='Click with the left button on sub-plot and end with the right button!')     
+      tcltk::tkmessageBox(message='Click with the left button on plot and end with the right button!')
+
+      text(x = locator(),
+           y = NULL,
+           Labelsplot,
+           col = coltext)
+
+      tcltk::tkmessageBox(message='Click with the left button on sub-plot and end with the right button!')
       text(x = locator(),
            y = NULL,
            treat,
            srt = srttext,
-           col = colgrid)   
+           col = colgrid)
     }
-} 
+}

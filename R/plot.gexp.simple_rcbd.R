@@ -13,7 +13,7 @@ plot.gexp.simple_rcbd <- function(x,
                                   random     = TRUE,
                                   ...)
 {
-  if(length(attr(x$X, 'contrasts')[-1]) != 1){
+  if (length(attr(x$X, 'contrasts')[-1]) != 1) {
     stop('Graphic option only for one factor!')
   }
 
@@ -33,11 +33,11 @@ plot.gexp.simple_rcbd <- function(x,
   repp <- dim(x$X)[1]/(length(levelsblock)*length(levelsfac))
 
 
-  if(is.null(main)){
+  if (is.null(main)) {
     main = 'Random Completely Block Design'
   }
 
-  if(is.null(sub)){
+  if (is.null(sub)) {
     sub <- paste('Factors: ',
                  labelfac,
                  '\n',
@@ -82,8 +82,8 @@ plot.gexp.simple_rcbd <- function(x,
 
   aux_posxcentro1 <- aux_posxcentro + ((rowsquare - 1)*2/rowsquare)
 
-  posxcentro <- seq(aux_posxcentro, 
-                    aux_posxcentro1, 
+  posxcentro <- seq(aux_posxcentro,
+                    aux_posxcentro1,
                     by = 2/rowsquare)
 
   aux_posycentro <- 1/columsquare
@@ -91,13 +91,13 @@ plot.gexp.simple_rcbd <- function(x,
   aux_posycentro1 <- aux_posycentro + ((columsquare - 1)*2/columsquare)
 
   posycentro <- seq(aux_posycentro,
-                    aux_posycentro1, 
+                    aux_posycentro1,
                     by = 2/columsquare)
 
-  if(!dynamic){ 
+  if (!dynamic) {
     op <- par('xaxs', 'yaxs') # Original par('xaxs', 'yaxs')
 
-    par(xaxs = 'i', 
+    par(xaxs = 'i',
         yaxs = 'i')
 
     plot(1,
@@ -119,26 +119,26 @@ plot.gexp.simple_rcbd <- function(x,
          lty = ltygrid,
          lwd = lwdgrid)
 
-    text(x = rep(posycentro, 
+    text(x = rep(posycentro,
                  length(posxcentro)),
          y = rep(posxcentro,
                  rep(length(posycentro),
-                     length(posxcentro))), 
+                     length(posxcentro))),
          treat,
          col = coltext)
 
     arrows(-0.05,
-           seq(0, 
-               2, 
+           seq(0,
+               2,
                by = 2/rowsquare),
            -0.05,
-           seq(2/rowsquare, 
-               2, 
+           seq(2/rowsquare,
+               2,
                by = 2/rowsquare),
            angle = 90,
            xpd = TRUE,
            code = 3,
-           length = 0.06) 
+           length = 0.06)
 
     text(-0.08,
          posxcentro,
@@ -151,9 +151,9 @@ plot.gexp.simple_rcbd <- function(x,
   } else {
     auxin <- tcltk::tk_choose.files()
 
-    auxin1 <- gsub('[\\s\\S]*?\\.', 
-                   '', 
-                   auxin, 
+    auxin1 <- gsub('[\\s\\S]*?\\.',
+                   '',
+                   auxin,
                    perl = TRUE)
 
     auxin2 <- toupper(auxin1)
@@ -167,7 +167,7 @@ plot.gexp.simple_rcbd <- function(x,
            },
            JPG = {
              myimage <- jpeg::readJPEG(auxin)
-           }) 
+           })
 
     plot(1,
          type = 'n',
@@ -178,19 +178,19 @@ plot.gexp.simple_rcbd <- function(x,
          sub = sub,
          ...)
 
-    rasterImage(myimage, 
-                xleft = xleftimg, 
-                ybottom = ybottomimg, 
-                xright = xrightimg, 
-                ytop = ytopimg) 
+    rasterImage(myimage,
+                xleft = xleftimg,
+                ybottom = ybottomimg,
+                xright = xrightimg,
+                ytop = ytopimg)
 
     tcltk::tkmessageBox(message = 'Click with the left button on block and end with the right button!')
 
     text(x = locator(),
          y = NULL,
-         paste(labelblock, 
-               1:rowsquare), 
-         col = coltext) 
+         paste(labelblock,
+               1:rowsquare),
+         col = coltext)
 
     tcltk::tkmessageBox(message = 'Now, click with the left button on experimental unit and end with the right button!')
 

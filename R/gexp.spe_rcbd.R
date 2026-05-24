@@ -43,12 +43,7 @@ gexp.spe_rcbd <- function(x, ...)
   contrast <- c(contrast,
                 contrasttreatments)
 
-  if (!is.null(x$contrasts)) {
-    contrast[names(x$contrasts)] <- x$contrasts
-    contrasts <- contrast
-  } else {
-    contrasts <- contrast
-  }
+  contrasts <- .gexp_contrasts_merge(contrast, x)
 
   factors <- c(factors,
                treatments)
@@ -96,58 +91,10 @@ gexp.spe_rcbd <- function(x, ...)
                     dados,
                     contrasts.arg = eval(parse(text = zformula)))
 
-  if (is.null(x$err)) {
-    e <- mvtnorm::rmvnorm(n     = dim(XB$XB)[1],
-                          sigma = diag(length(x$mu)))
-  } else {
-    if (!is.matrix(x$err))
-      stop("This argument must be a matrix n x 1 univariate or n x p multivariate!")
+  e <- .gexp_err(x, dim(XB$XB)[1])
+  e_plot <- .gexp_errp(x, Z)
+  Y <- .gexp_response(x, XB, e, Z = Z, e_plot = e_plot)
+  dfm <- .gexp_bind_dfm(x, dados, Y)
 
-    e <- x$err
-  }
-
-  if (is.null(x$errp)) {
-    e_plot <- mvtnorm::rmvnorm(n     = dim(Z)[2],
-                               sigma = diag(length(x$mu)))
-  } else {
-    if (!is.matrix(x$errp))
-      stop("This argument must be a matrix n x 1 univariate or n x p multivariate!")
-
-    e_plot <- x$errp
-  }
-
-  yl <- XB$XB + Z %*% e_plot + e
-
-  colnames(yl) <- paste('Y',
-                        1:dim(yl)[2],
-                        sep = '')
-
-  Y <- round(yl,
-             x$round)
-
-  # Faria, J. C.
-  if (!x$qualiquanti$quali) {
-    dados <- lapply(dados,
-                    function(x) {
-                      if (is.ordered(factor(x))) as.numeric(as.character(x)) else x
-                    })
-
-    dados <- as.data.frame(dados)
-  }
-
-  dados <- cbind(dados,
-                 Y)
-
-  res <- list(X   = XB$X,
-              Z   = Z,
-              Y   = Y,
-              dfm = dados)
-
-  class(res) <- c(paste('gexp',
-                        class(x),
-                        sep = '.'),
-                  'gexp',
-                  'list')
-
-  return(res)
+  return(.gexp_pack(x, XB, Z, Y, dfm))
 }

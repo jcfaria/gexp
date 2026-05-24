@@ -4,6 +4,9 @@
 
 ## 1.1-0 (2026-05-23) - Faria, J. C.
 
+### Internal
+- Added `R/gexp-utils.R` with shared helpers for error simulation, response assembly, data-frame binding, result packing, and contrast merging; all nine `gexp.*` methods now call these helpers (no change in exported behaviour).
+
 ### Code style
 - Reformatted all sources under `R/` for readability (aligned named arguments, consistent spacing, and line breaks at commas) without changing program logic.
 - Renamed `vignettes/intro.Rmd` to `vignettes/gexp-overview.Rmd` with conventional R code spacing in examples (aligned with standard style, distinct from `/R` sources).

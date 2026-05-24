@@ -1,56 +1,56 @@
 ---
-title: "An introduction to gexp package"
-author: "Allaman, I. B. </br> Faria, J. C."
+title: "Introduction to the gexp package"
+author: "Allaman, I. B. <br> Faria, J. C."
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{An introduction to gexp package}
+  %\VignetteIndexEntry{Introduction to the gexp package}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-bibliography: ../inst/biblio/bibliography.bib  
+bibliography: ../inst/biblio/bibliography.bib
 ---
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment  = "#>"
 )
 ```
-The `gexp` package was elaborated inspired by the personal functions of Professor Faria, J. C., whose objective is to generate one or **p** random variables according to the type of experiment, whose effects of the treatments are indicated by the user.
+The `gexp` package builds on earlier functions developed by Faria, J. C. Its goal is to generate one or **p** response variables for a given experimental structure, with treatment effects specified by the user.
 
-Most packages like agricolae, for example, have functions that allow the user to generate only designs, thus helping the researcher who wants to set up an experiment. However, if the user has the interest in generating random variables according to the type of experiment and still, being able to manipulate which treatments will be different, then the `gexp` package has this differential.
+Packages such as **agricolae**, for example, focus mainly on generating experimental layouts. The `gexp` package goes further: it simulates responses under a specified design while letting the user control which treatments differ.
 
-The experiments included in the package are: a completely randomized design (CRD), randomized complete block design (RCBD), latin square design (LSD), factorial schemes considering CRD, DBC and DQL designs and a schema in split-plots also considering the CRD, RCBD and LSD designs [@Aquino:1992].
+Supported designs include the completely randomized design (CRD), randomized complete block design (RCBD), Latin square design (LSD), factorial experiments under CRD, RCBD, and LSD, and split-plot arrangements under the same base designs [@Aquino:1992].
 
-The arguments of the function are based on a linear model with the following matrix form (@Ferreira:2008, @Rencher:2007):
+Function arguments follow a linear model in matrix form (@Ferreira:2008, @Rencher:2007):
 
 $$Y = X\beta + E \hspace{5cm} (1)$$
 
-then:
+where:
 
-Y is a n$\times$p matrix, with **n** observation of **p** random variables;
+$Y$ is an $n \times p$ matrix with **n** observations on **p** response variables;
 
-X is a n$\times$m matrix, where **m** is the number of parameters that influence the response variable ($\mu, \alpha's, \beta's, etc.$);
+$X$ is an $n \times m$ model matrix, where **m** is the number of parameters affecting the response ($\mu$, $\alpha$, $\beta$, etc.);
 
-$\beta$ is a m$\times$p matrix of factors effects;
+$\beta$ is an $m \times p$ matrix of factor effects;
 
-$E$ is a n$\times$p matrix of the errors with p-variate normal distribution with mean vectors **0** and **$\Sigma$** covariance;
+$E$ is an $n \times p$ matrix of errors, multivariate normal with mean **0** and covariance **$\Sigma$**;
 
-In the case of the split-plot design, the package works considering the following linear mixed model [@Naes:2007]:
+For split-plot experiments, the package uses the following linear mixed model [@Naes:2007]:
 
 $$Y = X\beta + Zu + E \hspace{5cm} (2)$$
 
-then:
+where:
 
-Z is a n$\times$q matrix, where **q** is the number of parameters of the interaction that influence the plot error (CRD - repetition:$\alpha$, RCBD - block:$\alpha$, LSD - row:column:$\alpha$);
+$Z$ is an $n \times q$ plot-error model matrix (**q** depends on the design: replication in CRD, block in RCBD, row:column in LSD);
 
-u is a q$\times$p matrix of the plot errors with p-variate normal distribution with mean vectors **0** and **$\Sigma_{plot}$** covariance;
+$u$ is a $q \times p$ matrix of whole-plot errors, multivariate normal with mean **0** and covariance **$\Sigma_{plot}$**;
 
-$E$ is a n$\times$p matrix of the errors with p-variate normal distribution with mean vectors **0** and **$\Sigma_{sub-plot}$** covariance of subplot;
+$E$ is an $n \times p$ matrix of subplot errors, multivariate normal with mean **0** and covariance **$\Sigma_{sub-plot}$**;
 
-The other components of the equation 2 are analogous to equation 1.
+The remaining terms in equation (2) are defined as in equation (1).
 
-The symbology adopted was as follows:
+Notation used in the package:
 
 <center>
 <table>
@@ -81,12 +81,12 @@ The symbology adopted was as follows:
 </table>
 </center>
 
-The **multivariate case**, will only be addressed in the CRD, because for the other designs the reasoning is the same. 
+The **multivariate** case is illustrated with CRD only; other designs follow the same logic. 
 
-# Simulating an Completely Randomized Design (CRD)
+# Simulating a Completely Randomized Design (CRD)
 ## Univariate case
 
-Let us assume that we want to generate a **single** random variable according to a CRD with a factor and two levels being 3 replicates. Then we can denote $Y_{ik}$ as being the random variable observed in the k-th experimental unit (k = 1, 2, 3) that received the i-th level of factor X1 (i = 1,2). Also, assuming that this variable is under the effect of a constant ($\mu = 15$) and each level of the factor under study influence $\alpha_1 = 1$ and $\alpha_2 = -2$ the response variable respectively, we will have the following matrix configuration:
+Suppose we want to generate a **single** random variable under a CRD with a factor and two levels with three replicates. Then we can denote $Y_{ik}$ as the random variable observed in the k-th experimental unit (k = 1, 2, 3) that received the i-th level of factor X1 (i = 1,2). Also, assuming that this variable is under the effect of a constant ($\mu = 15$) and each level of the factor affects the response: $\alpha_1 = 1$ and $\alpha_2 = -2$ the response, respectively. The matrix layout is:
 
 $$
 \begin{eqnarray}
@@ -179,7 +179,7 @@ e_{23}
 \end{eqnarray}
 $$ 
 
-If we consider an error with mean 0 and variance 0 then we have the following simulated random variable:
+With zero mean and zero variance for the error, the simulated responses are:
 
 $$
 \begin{bmatrix}
@@ -201,7 +201,7 @@ Y_{23}
 \end{bmatrix} 
 $$
 
-With the `gexp` package we have:
+With the `gexp` package:
 
 ```{r}
 library(gexp)
@@ -215,7 +215,7 @@ summary(crd)
 
 ## Multivariate Case
 
-Let us now assume that we want to generate **two** random variables by considering the same number of factors and the same number of repetitions of the previous case. Then we can denote $Y_{ikl}$ as being the lth random variable (l = 1,2) observed in the k-th experimental unit (k = 1,2,3) that received the i-th factor level X1 (i = 1,2). Also, assuming that this variable is under the effect of a constant ($\mu_1 = 15$ and $\mu_2 = 6$) and each level of the factor under study influence $\alpha_{11} = 1$ and $\alpha_{21} = -2$ the variable 1 and, $\alpha_{12} = 2$ and $\alpha_{22} = 3$ the variable 2, we will have the following matrix configuration:
+Let us now assume that we want to generate **two** random variables by considering the same number of factors and the same number of repetitions of the previous case. Then we can denote $Y_{ikl}$ as the lth random variable (l = 1,2) observed in the k-th experimental unit (k = 1,2,3) that received the i-th factor level X1 (i = 1,2). Also, assuming that this variable is under the effect of a constant ($\mu_1 = 15$ and $\mu_2 = 6$) and each level of the factor affects the response: $\alpha_{11} = 1$ and $\alpha_{21} = -2$ the variable 1 and, $\alpha_{12} = 2$ and $\alpha_{22} = 3$ the variable 2, we will have the following matrix configuration:
 
 $$
 \begin{eqnarray}
@@ -308,7 +308,7 @@ e_{231} & e_{232}
 \end{eqnarray}
 $$
 
-If we consider an error with averages 0 and a matrix of variance-covariance 0 then we will have the following simulated random variables:
+With zero mean errors and a zero variance-covariance matrix, the simulated responses are:
 
 $$
 \begin{bmatrix}
@@ -330,27 +330,27 @@ Y_{231} & Y_{232}
 \end{bmatrix} 
 $$
 
-With the `gexp` package we have:
+With the `gexp` package:
 
 ```{r}
-crd_mv <- gexp(mu = c(15, 6),
+crd_mv <- gexp(mu  = c(15, 6),
                err = matrix(c(0, 0,
                               0, 0,
                               0, 0,
                               0, 0,
                               0, 0,
-                              0, 0), 
+                              0, 0),
                             ncol = 2),
-               r = 3L,
-               fe = list(alpha = matrix(c(1, -2,
-                                           2,  3), 
+               r   = 3L,
+               fe  = list(alpha = matrix(c(1, -2,
+                                           2,  3),
                                          ncol = 2)))
 summary(crd_mv)
 ```
 
 # Simulating a Randomized Completely Block Design (RCBD) 
 
-Assuming we want to generate a **single** random variable according to a RCBD with a factor and two levels being a block with three levels. Then we can denote $Y_ {ij}$ as the random variable observed in the j-th block (j = 1, 2, 3) that received the i-th level of factor X1 (i = 1, 2). Also, assuming that this variable is under the effect of a constant ($\mu = 15$) and each level of the factor under study influence $\alpha_1 = 1$ and $\alpha_2 = -2$ the variable response respectively, and each block influences in $\beta_1 = 2, \beta_2 = 4$ and $\beta_3 = 6$ respectively, we will have the following matrix configuration:
+Assuming we want to generate a **single** random variable under an RCBD with a factor and two levels being a block with three levels. Then we can denote $Y_ {ij}$ as the random variable observed in the j-th block (j = 1, 2, 3) that received the i-th level of factor X1 (i = 1, 2). Also, assuming that this variable is under the effect of a constant ($\mu = 15$) and each level of the factor affects the response: $\alpha_1 = 1$ and $\alpha_2 = -2$ the response, respectively, and each block effect is $\beta_1 = 2, \beta_2 = 4$ and $\beta_3 = 6$ respectively, we will have the following matrix configuration:
 
 $$
 \begin{eqnarray}
@@ -449,7 +449,7 @@ e_{23}
 \end{eqnarray}
 $$ 
 
-Assuming an error with mean 0 and variance 0, we have:
+With zero-mean errors:
 
 $$
 \begin{bmatrix}
@@ -471,22 +471,22 @@ Y_{23}
 \end{bmatrix}
 $$
 
-With the `gexp` package we have:
+With the `gexp` package:
 
 ```{r}
-rcbd <- gexp(mu = 15,
-             r = 1,
-             err = matrix(rep(0, 6),
-                           nrow = 6),
-             fe = list(alpha = c(1, -2)),
-             blke = c(2, 4, 6),
+rcbd <- gexp(mu     = 15,
+             r      = 1,
+             err    = matrix(rep(0, 6),
+                             nrow = 6),
+             fe     = list(alpha = c(1, -2)),
+             blke   = c(2, 4, 6),
              design = 'RCBD')
 summary(rcbd)
 ```
 
 # Simulating a Latin Square Design (LSD)
 
-Assuming we want to generate a **single** random variable according to a LSD with a factor and three levels, with a blocking factor in the row sense with three levels and another blocking factor in the column sense with three levels. Then we can denote $Y_{rci}$ as being the random variable observed in the c-th column (c = 1, 2, 3) and r-th row (r = 1, 2, 3) that received the i-th level of factor X1 (i = 1, 2, 3). Also, assuming this variable is under the effect of a constant ($\mu = 15$) and each level of the factor under study influence $\alpha_1 = 1, \alpha_2 = -2$ e $\alpha_3 = 3$ the response variable respectively, each row influencing in $\eta_1 = 2,\eta_2 = 3$ and $\eta_3 = 4$ respectively and each column influencing in $\delta_1 = 6, \delta_2 = 7$ and $\delta_3 = 8$ respectively we will have the following matrix configuration:
+Assuming we want to generate a **single** random variable under an LSD with a factor and three levels, with a blocking factor in the row sense with three levels and another blocking factor in the column sense with three levels. Then we can denote $Y_{rci}$ as the random variable observed in the c-th column (c = 1, 2, 3) and r-th row (r = 1, 2, 3) that received the i-th level of factor X1 (i = 1, 2, 3). Also, assuming this variable is under the effect of a constant ($\mu = 15$) and each level of the factor affects the response: $\alpha_1 = 1, \alpha_2 = -2$, and $\alpha_3 = 3$ for the response. Row effects are $\eta_1 = 2$, $\eta_2 = 3$, and $\eta_3 = 4$; column effects are $\delta_1 = 6$, $\delta_2 = 7$, and $\delta_3 = 8$. The matrix layout is:
 
 $$
 \begin{eqnarray}
@@ -614,7 +614,7 @@ e_{332}
 \end{eqnarray}
 $$ 
 
-Considering that the error has mean 0 and variance 0 we have:
+With zero-mean errors:
 
 $$
 \begin{bmatrix}
@@ -642,16 +642,16 @@ Y_{332}
 \end{bmatrix} 
 $$
 
-Using the `gexp` function we have:
+With the `gexp` package:
 
 ```{r}
-lsd <- gexp(mu = 15,
-            r = 1,
-            err = matrix(rep(0, 9), 
-                           nrow = 9),
-            fe = list(alpha = c(1, -2, 3)),
-            rowe = c(2, 3, 4),
-            cole = c(6, 7, 8),
+lsd <- gexp(mu     = 15,
+            r      = 1,
+            err    = matrix(rep(0, 9),
+                            nrow = 9),
+            fe     = list(alpha = c(1, -2, 3)),
+            rowe   = c(2, 3, 4),
+            cole   = c(6, 7, 8),
             design = 'LSD')
 summary(lsd)
 ```
@@ -659,7 +659,7 @@ summary(lsd)
 # Factorial Experiments
 ## CRD
 
-Considering that we want to generate a **single** random variable according to a CRD in a factorial scheme of type 2 x 3 (two levels of factor X1 and three levels of factor X2) with 2 replicates. Then we can denote $Y_{ijk}$ as being the random variable observed in the k-th experimental unit (k = 1, 2) that received the i-th level of factor X1 (i = 1,2) and jth level of factor X2 (j = 1,2,3). Also, assuming this variable is under the effect of a constant ($\mu = 15$), and each level of factor X1 influences $\alpha_1 = 1$ and $\alpha_2 = -2$, each level of factor X2 influences in $\tau_1 = 1, \tau_2 = -1$ and $\tau_3 = 1$ and the effect of the interaction is $\gamma_{11} = 3,\gamma_{21} = 1,\gamma_{12} = 1,\gamma_{22} = -5,\gamma_{13} = 1$ And $\gamma_{23} = 1$ respectively, we shall have following matrix configuration:
+Suppose we want to generate a **single** random variable under a CRD in a factorial scheme of type 2 x 3 (two levels of factor X1 and three levels of factor X2) with 2 replicates. Then we can denote $Y_{ijk}$ as the random variable observed in the k-th experimental unit (k = 1, 2) that received the i-th level of factor X1 (i = 1,2) and j-th level of factor X2 (j = 1,2,3). Also, assuming this variable is under the effect of a constant ($\mu = 15$), and each level of factor X1 gives $\alpha_1 = 1$ and $\alpha_2 = -2$, each level of factor X2 are $\tau_1 = 1, \tau_2 = -1$ and $\tau_3 = 1$ and the effect of the interaction is $\gamma_{11} = 3,\gamma_{21} = 1,\gamma_{12} = 1,\gamma_{22} = -5,\gamma_{13} = 1$, and $\gamma_{23} = 1$, we obtain the following matrix layout:
 
 $$
 \begin{eqnarray}
@@ -812,7 +812,7 @@ e_{232}
 \end{eqnarray}
 $$
 
-Considering that the error has mean 0 and variance 0 we have:
+With zero-mean errors:
 
 $$
 \begin{bmatrix}
@@ -846,16 +846,16 @@ Y_{232}
 \end{bmatrix}
 $$
 
-Using the `gexp` function we have:
+With the `gexp` package:
 
 ```{r}
-FE_crd <- gexp(mu = 15,
-               r = 2, 
-               err = matrix(rep(0, 12),
-                            nrow = 12),
-               fe = list(alpha = c(1, -2),
-                         tau = c(1, -1, 1)),
-               inte = c(3, 1, 1, 
+FE_crd <- gexp(mu   = 15,
+               r    = 2,
+               err  = matrix(rep(0, 12),
+                             nrow = 12),
+               fe   = list(alpha = c(1, -2),
+                           tau   = c(1, -1, 1)),
+               inte = c(3, 1, 1,
                         -5, 1, 1),
                type = 'FE')
 summary(FE_crd)
@@ -864,10 +864,10 @@ summary(FE_crd)
 # Split-plot experiments
 ## CRD
 
-Supondo que queiramos gerar uma variável aleatória segundo um DIC em parcelas subdivididas com dois níveis do fator X1 na parcela e dois níveis do fator X2 na subparcela com 3 repetições. Então, podemos denominar $Y_{ijk}$ como sendo a variável aleatória observada na subparcela na k-ésima unidade experimental (k = 1, 2 e 3) que recebeu o i-ésimo nível do fator X1 (i=1,2) e j-ésimo nível do fator X2 (j=1,2). Ainda, supondo que esta variável esteja sob o efeito de uma constante ($\mu=15$), e cada nível do fator X1 influenciem em $\alpha_{1}=1$ e $\alpha_{2}=-2$, cada nível do fator X2 influenciam em $\tau_{1}=1$ e $\tau_{2}=-1$ e que o efeito da interação seja de $\gamma_{11}=3, \gamma_{21}=1, \gamma_{12}=1$ e $\gamma_{22}=-5$ respectivamente, teremos a seguinte configuração matricial conforme a equação 2.
+Suppose we want a single response under a CRD split-plot with two whole-plot levels of factor X1 and two subplot levels of factor X2, with three replicates. Let $Y_{ijk}$ denote the response in the subplot of experimental unit $k$ ($k = 1, 2, 3$) receiving level $i$ of X1 ($i = 1, 2$) and level $j$ of X2 ($j = 1, 2$). With overall mean $\mu = 15$, whole-plot effects $\alpha_1 = 1$ and $\alpha_2 = -2$, subplot effects $\tau_1 = 1$ and $\tau_2 = -1$, and interaction effects $\gamma_{11} = 3$, $\gamma_{21} = 1$, $\gamma_{12} = 1$, and $\gamma_{22} = -5$, the setup follows equation (2).
 
 
-Portanto, tem-se a seguinte configuração matricial:
+The matrix layout is therefore:
 
 $$
 \begin{eqnarray}
@@ -1101,7 +1101,7 @@ e_{223}
 \end{eqnarray}
 $$
 
-Considering that the error of plot and subplot has mean 0 and variance 0 we have:
+With zero-mean whole-plot and subplot errors:
 
 $$
 \begin{bmatrix}
@@ -1135,26 +1135,26 @@ Y_{223}
 \end{bmatrix}  
 $$
 
-Using the `gexp` package we have:
+With the `gexp` package:
 
 ```{r}
-SPE_crd <- gexp(mu = 15,
-                  err = matrix(rep(0, 12),
-                                nrow = 12),
-                  errp = matrix(rep(0, 6),
-                                nrow = 6),
-                  r = 3,
-                  fe = list(alpha = c(1, -2),
-                              tau = c(1, -1)),
-                  inte = c(3, 1, 1, -5),
-                  type = 'SPE')
+SPE_crd <- gexp(mu   = 15,
+                err  = matrix(rep(0, 12),
+                              nrow = 12),
+                errp = matrix(rep(0, 6),
+                              nrow = 6),
+                r    = 3,
+                fe   = list(alpha = c(1, -2),
+                            tau   = c(1, -1)),
+                inte = c(3, 1, 1, -5),
+                type = 'SPE')
 summary(SPE_crd)
 ```
 # Simulating a CRD with a quantitative factor
 ## Non-Orthogonal Contrast
 ### Linear Effect
 
-Let us suppose that we want to generate a **single** random variable according to a CRD with one factor and four levels (0, 5, 10, 15) being 3 repetitions. Then we can denote $Y_ {ik}$ as being the random variable observed in the k-th experimental unit (k = 1, 2, 3) that received the i-th level of factor X1 (i = 1,2,3,4). In this case, it is only possible to adjust a regression up to the third degree. As the treatment is quantitative, instead of indicating the effects of treatments as deviations from the general mean, we will indicate the value we want for each regression coefficient. So, instead of having $\mu, \alpha_1, \alpha_2, \alpha_3$ and $\alpha_4$, we have $\beta_0$ (the intercept), $\beta_1$ (the angular coefficient), $\beta_2$ the quadratic coefficient) and $\beta_3$ (the cubic coefficient). Since the effect we want is linear, then we can provide the following values for betas: $\beta_0 = 2, \beta_1 = 3, \beta_2 = 0$ and $\beta_3 = 0$. Therefore, we will have the following matrix configuration:
+Suppose we want to generate a **single** random variable under a CRD with one factor and four levels (0, 5, 10, 15) with three replicates. Then we can denote $Y_ {ik}$ as the random variable observed in the k-th experimental unit (k = 1, 2, 3) that received the i-th level of factor X1 (i = 1,2,3,4). In this case, it is only possible to adjust a regression up to the third degree. As the treatment is quantitative, instead of indicating the effects of treatments as deviations from the general mean, we will indicate the value we want for each regression coefficient. So, instead of having $\mu, \alpha_1, \alpha_2, \alpha_3$ and $\alpha_4$, we have $\beta_0$ (the intercept), $\beta_1$ (the linear coefficient), $\beta_2$ the quadratic coefficient and $\beta_3$ (the cubic coefficient). Since the effect we want is linear, then we can provide the following values for betas: $\beta_0 = 2, \beta_1 = 3, \beta_2 = 0$ and $\beta_3 = 0$. Therefore, we will have the following matrix configuration:
 
 $$
 \begin{eqnarray}
@@ -1291,7 +1291,7 @@ e_{43}
 \end{eqnarray}
 $$ 
 
-If we consider an error with mean 0 and variance 0 then we have the following simulated random variable:
+With zero mean and zero variance for the error, the simulated responses are:
 
 $$
 \begin{bmatrix}
@@ -1325,7 +1325,7 @@ Y_{43}
 \end{bmatrix} 
 $$
 
-Using the `gexp` package we have:
+With the `gexp` package:
 
 ```{r}
 level <- seq(0, 15, 5)
@@ -1334,24 +1334,24 @@ cont_crd <- matrix(c(level,
                      level^3),
                    ncol = 3)
 
-crd_l <- gexp(mu = 2,
-              r = 3,
-              err = matrix(rep(0,12),
-                           nrow = 12),
-              fe = list(f1 = c(3, 0, 0)),
-              fl = list(dose = level),
+crd_l <- gexp(mu        = 2,
+              r         = 3,
+              err       = matrix(rep(0, 12),
+                                 nrow = 12),
+              fe        = list(f1 = c(3, 0, 0)),
+              fl        = list(dose = level),
               contrasts = list(dose = cont_crd))
 
 summary(crd_l)
 ```
 
-Below the simulation chart.
+The plot below shows the simulated data.
 
-```{r echo=FALSE, results='hide'}
+```{r echo = FALSE, results = 'hide'}
 with(crd_l$dfm,
      plot(Y1 ~ dose,
           axes = FALSE,
-          ylim = c(0,50),
+          ylim = c(0, 50),
           xlab = 'dose'))
 axis(1, pos = 0)
 axis(2, pos = 0)
@@ -1362,7 +1362,7 @@ text(-0.5,2,'2',col = 'red', xpd = TRUE)
 
 ### Quadratic effect
 
-Taking advantage of the same previous example, adding only the quadratic effect to the data, that is, $\beta_2 = 4$. Therefore, we will have the following matrix configuration:
+Using the same example, we now add only a quadratic effect ($\beta_2 = 4$). The matrix layout is:
 
 $$
 \begin{eqnarray}
@@ -1499,23 +1499,23 @@ e_{43}
 \end{eqnarray}
 $$ 
 
-Using the `gexp` package we have:
+With the `gexp` package:
 
 ```{r}
-crd_q <- gexp(mu = 2,
-              r = 3,
-              err = matrix(rep(0,12),
-                           nrow = 12),
-              fe = list(f1 = c(3, 4, 0)),
-              fl = list(dose = level),
+crd_q <- gexp(mu        = 2,
+              r         = 3,
+              err       = matrix(rep(0, 12),
+                                 nrow = 12),
+              fe        = list(f1 = c(3, 4, 0)),
+              fl        = list(dose = level),
               contrasts = list(dose = cont_crd))
 
 summary(crd_q)
 ```
 
-Below the simulation chart.
+The plot below shows the simulated data.
 
-```{r echo=FALSE, results='hide'}
+```{r echo = FALSE, results = 'hide'}
 with(crd_q$dfm,
      plot(Y1 ~ dose,
           axes = FALSE,
@@ -1526,10 +1526,10 @@ curve(2+3*x+4*x^2, col = 'red', lty = 2, add=T)
 text(-0.5,2,'2',col = 'red', xpd = TRUE) 
 ``` 
 
-# Simulating a CRD in a factorial experiments with two quantitative factors
-## Linear Response Surface
+# Factorial CRD with two quantitative factors
+## Linear response surface
 
-Let us suppose that we want to generate a **single** random variable according to a CRD with two quantitative factors with levels 0, 5, 10, 15 and 2, 4, 6, 8 respectively, being 2 replicates. Then we can denote $Y_{ijk}$ as being the random variable observed in the k-th experimental unit (k = 1, 2) that received the i-th level of factor X1 (i = 1,2,3,4) and j-th level of factor X2 (j = 1,2,3,4). In these cases, we should note that there is only one intercept. Therefore, such an intercept must appear in the first factor to be declared. In the others, the value of the intercept must be declared as 0 (only to compute the length of the vector correctly). Therefore, consider the following values for the first factor: $\beta_0 = 1, \beta_1 = 3, \beta_2 = 0, \beta_3 = 0$. For the second factor we have: $\beta_4 = 2, \beta_5 = 0, \beta_6 = 0$. Matrically we have:
+Suppose we want to generate a **single** random variable under a CRD with two quantitative factors with levels 0, 5, 10, 15 and 2, 4, 6, 8 respectively, being 2 replicates. Then we can denote $Y_{ijk}$ as the random variable observed in the k-th experimental unit (k = 1, 2) that received the i-th level of factor X1 (i = 1,2,3,4) and j-th level of factor X2 (j = 1,2,3,4). In these cases, we should note that there is only one intercept. Therefore, such an intercept must appear in the first factor to be declared. In the others, the value of the intercept must be declared as 0 (only to compute the length of the vector correctly). Therefore, consider the following values for the first factor: $\beta_0 = 1, \beta_1 = 3, \beta_2 = 0, \beta_3 = 0$. For the second factor we have: $\beta_4 = 2, \beta_5 = 0, \beta_6 = 0$. In matrix form:
 
 $$
 \begin{eqnarray}
@@ -1812,32 +1812,32 @@ e_{442}
 \end{eqnarray}
 $$ 
 
-Using the `gexp` package we have:
+With the `gexp` package:
 
 ```{r}
 level2 <- seq(2,8,2)
 cont_crd2 <- matrix(c(level2,level2^2,level2^3),
                     ncol = 3)
 
-crd_hb <- gexp(mu = 1,
-               r = 2,
-               err = matrix(rep(0,32),
-                            nrow = 32),
-               fe = list(f1 = c(3, 0, 0),
-                         f2 = c(2, 0, 0)),
-               fl = list(N = level,
-                         P = level2),
-               inte = c(6,0,0,0,0,0,0,0,0),
+crd_hb <- gexp(mu        = 1,
+               r         = 2,
+               err       = matrix(rep(0, 32),
+                                  nrow = 32),
+               fe        = list(f1 = c(3, 0, 0),
+                                f2 = c(2, 0, 0)),
+               fl        = list(N = level,
+                                P = level2),
+               inte      = c(6, 0, 0, 0, 0, 0, 0, 0, 0),
                contrasts = list(N = cont_crd,
                                 P = cont_crd2),
-              type = 'FE')
+               type      = 'FE')
 
 summary(crd_hb)
 ```
 
-Below the simulation chart.
+The plot below shows the simulated data.
 
-```{r echo=FALSE, results='hide'}
+```{r echo = FALSE, results = 'hide'}
 z <- matrix(crd_hb$dfm$Y1,
             ncol = 4,
             byrow = FALSE)[seq(1,8,2),]
@@ -1855,25 +1855,25 @@ persp(level,
 Let's omit matrix algebra as it is analogous to the one presented above. Considering now $\beta_2 = 2$ and $\beta_5 = 3$, we have the following result using the `gexp` package.
  
 ```{r}
-crd_hb2 <- gexp(mu = 1,
-                r = 2,
-                err = matrix(rep(0,32),
-                             nrow = 32),
-                fe = list(f1 = c(3, 2, 0),
-                          f2 = c(2, 3, 0)),
-                fl = list(N = level,
-                          P = level2),
-                inte = c(2,1,0,1,8,0,0,0,0), 
+crd_hb2 <- gexp(mu        = 1,
+                r         = 2,
+                err       = matrix(rep(0, 32),
+                                   nrow = 32),
+                fe        = list(f1 = c(3, 2, 0),
+                                 f2 = c(2, 3, 0)),
+                fl        = list(N = level,
+                                 P = level2),
+                inte      = c(2, 1, 0, 1, 8, 0, 0, 0, 0),
                 contrasts = list(N = cont_crd,
                                  P = cont_crd2),
-                type = 'FE')
+                type      = 'FE')
 
 summary(crd_hb2)
 ```
 
-Below the simulation chart.
+The plot below shows the simulated data.
 
-```{r echo=FALSE, results='hide'}
+```{r echo = FALSE, results = 'hide'}
 z1 <- matrix(crd_hb2$dfm$Y1,
             ncol=4,
             byrow=FALSE)[seq(1,8,2),]
@@ -1886,13 +1886,13 @@ persp(level,
       col='red')
 ``` 
 
-# Doing experiment planning
-## Not interactive
+# Experimental planning
+## Non-interactive layouts
 ### CRD
 
-Let's suppose that we are interested in planning a DIC with three treatments (default) and five repetitions (default). In this case, as we are not interested in simulating data, we can give any value to the effects of the treatments, because what matters is the arrangement of the treatments in the experimental units.
+Suppose we want to plan a CRD with three treatments (default) and five replicates (default). When only the layout matters, treatment effects can be arbitrary.
 
-So, using the `gexp` package we have:
+With the `gexp` package:
  
 ```{r}
 crd_design <- gexp()
@@ -1901,16 +1901,16 @@ plot(crd_design)
 
 ### RCBD without repetition
 
-Let us consider an RCBD in which the block is the very repetition of the experiment. Consider also three treatments (default) and three blocks (default).
+Consider an RCBD in which each block is a replicate, with three treatments (default) and three blocks (default).
 
-With the `gexp` package we have:
+With the `gexp` package:
 
 ```{r}
-rcbd_designs <- gexp(r = 1, 
+rcbd_designs <- gexp(r      = 1,
                      design = 'RCBD')
 ```
 
-Graphically, we have:
+Plot:
 
 ```{r fig.width = 7, fig.height = 7}
 plot(rcbd_designs)
@@ -1918,16 +1918,16 @@ plot(rcbd_designs)
 
 ### RCBD with repetition
 
-Considering the same experiment previous, alternating the number of repetitions inside blocks. Let us now consider two replicates per block.
+Using the same structure as above, we now use two replicates per block.
 
-With the `gexp` package we have:
+With the `gexp` package:
 
 ```{r}
-rcbd_designc <- gexp(r = 2, 
+rcbd_designc <- gexp(r      = 2,
                      design = 'RCBD')
 ```
 
-Graphically, we have:
+Plot:
 
 ```{r fig.width = 7, fig.height = 7}
 plot(rcbd_designc)
@@ -1935,14 +1935,14 @@ plot(rcbd_designc)
 
 ### LSD
 
-Consider a LSD with three treatments (default), three rows and three columns. In this case we have the following planning.
+Consider an LSD with three treatments (default), three rows, and three columns.
 
 ```{r}
-lsd_design <- gexp(r = 1,
+lsd_design <- gexp(r      = 1,
                    design = 'LSD')
 ```
 
-Graphically, we have:
+Plot:
 
 ```{r fig.width = 7, fig.height = 7}
 plot(lsd_design)
@@ -1950,14 +1950,14 @@ plot(lsd_design)
  
 ### Factorial - CRD
 
-Let us assume that we are interested in planning a 2x3 factorial (default) design with three replicates. 
+Suppose we are interested in planning a 2x3 factorial (default) design with three replicates. 
 
 ```{r}
-fat_design <- gexp(r = 3, 
+fat_design <- gexp(r    = 3,
                    type = 'FE')
 ```
 
-Using the graph we have:
+The layout plot:
 
 ```{r fig.width = 7, fig.height = 7}
 plot(fat_design)
@@ -1965,15 +1965,15 @@ plot(fat_design)
 
 ### Split-plot - CRD
 
-Assuming that we are interested in planning a CRD in split-plot, with two treatments in the plot (default) and three treatments in the subplot (default), with three replications.
+To plan a CRD split-plot with two whole-plot treatments (default), three subplot treatments (default), and three replicates:
  
 ```{r}
-split_design <- gexp(r = 3, 
+split_design <- gexp(r    = 3,
                      type = 'SPE')
 summary(split_design)
 ```
 
-Using the graph we have:
+The layout plot:
 
 ```{r fig.width = 7, fig.height = 7}
 plot(split_design)
@@ -1982,15 +1982,15 @@ plot(split_design)
 ## Interactive
 ### CRD
 
-If the researcher has a sketch of the experimental area in the PNG, JPG or JPEG formats, it is possible to import such a file with the functions of the gexp package and to randomly distribute the treatments in the experimental units. Suppose we have a sketch with six fish tanks, and we want to distribute two treatments with three replicates in the image. Then we proceed from the following form: 
+If you have a sketch of the experimental area (PNG, JPG, or JPEG), `gexp` can overlay randomized treatment labels on the image. For example, with six tanks and two treatments in three replicates each: 
 
 <video width="320" height="240" controls>
   <source src="../inst/video/crd.mp4" type="video/mp4">
 </video>
  
-```{r eval=FALSE}
-crd_plot <- gexp(r = 3, 
-                 fe = list(f1 = rep(1,2)))
+```{r eval = FALSE}
+crd_plot <- gexp(r  = 3,
+                 fe  = list(f1 = rep(1, 2)))
 plot(crd_plot,
      dynamic = TRUE)
 ```

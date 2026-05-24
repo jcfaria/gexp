@@ -6,6 +6,7 @@
 
 ### Code style
 - Reformatted all sources under `R/` for readability (aligned named arguments, consistent spacing, and line breaks at commas) without changing program logic.
+- Updated `vignettes/intro.Rmd`: aligned `gexp()` examples, improved English, and translated remaining Portuguese passages.
 
 ### Documentation
 - Standardized author names to scientific notation (`Faria, J. C.`; `Allaman, I. B.`) across the package.

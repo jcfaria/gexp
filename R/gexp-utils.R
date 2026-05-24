@@ -171,6 +171,19 @@
        cole = cole)
 }
 
+.gexp_rowcolumn_label <- function(lbl,
+                                  default_name)
+{
+  if (!is.list(lbl)) {
+    lbl <- stats::setNames(list(lbl), default_name)
+  } else if (is.null(names(lbl)) || !nzchar(names(lbl)[1])) {
+    names(lbl) <- default_name
+  }
+
+  list(name   = names(lbl)[1],
+       labels = factor(unlist(lbl[[1]])))
+}
+
 .gexp_rowcolumn_setup <- function(x,
                                  rowe,
                                  cole,
@@ -182,16 +195,20 @@
     rowcolumn$Row <- factor(1:dim(as.matrix(rowe))[1])
     contrast[["Row"]] <- diag(dim(as.matrix(rowe))[1])
   } else {
-    rowcolumn[[names(x$rowl)]] <- factor(unlist(x$rowl))
-    contrast[[names(x$rowl)]] <- diag(dim(as.matrix(rowe))[1])
+    rc <- .gexp_rowcolumn_label(x$rowl,
+                                "Row")
+    rowcolumn[[rc$name]] <- rc$labels
+    contrast[[rc$name]] <- diag(dim(as.matrix(rowe))[1])
   }
 
   if (is.null(x$coll)) {
     rowcolumn$Column <- factor(1:dim(as.matrix(cole))[1])
     contrast[["Column"]] <- diag(dim(as.matrix(cole))[1])
   } else {
-    rowcolumn[[names(x$coll)]] <- factor(unlist(x$coll))
-    contrast[[names(x$coll)]] <- diag(dim(as.matrix(cole))[1])
+    rc <- .gexp_rowcolumn_label(x$coll,
+                                "Column")
+    rowcolumn[[rc$name]] <- rc$labels
+    contrast[[rc$name]] <- diag(dim(as.matrix(cole))[1])
   }
 
   list(rowcolumn = rowcolumn,

@@ -60,6 +60,41 @@ test_that("summary and print methods run without error", {
   expect_output(print(crd), "Design Matrix")
 })
 
+test_that("simple LSD accepts rowl/coll as bare vectors or named lists", {
+  lsd_vec <- gexp(
+    mu     = 10,
+    err    = matrix(0, nrow = 25, ncol = 1),
+    r      = 1,
+    fe     = list(trt = c(0, 1, 2, 3, 4)),
+    rowe   = c(0, 1, 2, 3, 4),
+    rowl   = paste0("r", 1:5),
+    cole   = c(0, 1, 2, 3, 4),
+    coll   = paste0("l", 1:5),
+    type   = "SIMPLE",
+    design = "LSD"
+  )
+
+  lsd_list <- gexp(
+    mu     = 10,
+    err    = matrix(0, nrow = 25, ncol = 1),
+    r      = 1,
+    fe     = list(trt = c(0, 1, 2, 3, 4)),
+    rowe   = c(0, 1, 2, 3, 4),
+    rowl   = list(Row = paste0("r", 1:5)),
+    cole   = c(0, 1, 2, 3, 4),
+    coll   = list(Column = paste0("l", 1:5)),
+    type   = "SIMPLE",
+    design = "LSD"
+  )
+
+  expect_s3_class(lsd_vec, "gexp.simple_lsd")
+  expect_s3_class(lsd_list, "gexp.simple_lsd")
+  expect_equal(nrow(lsd_vec$dfm), 25L)
+  expect_equal(nrow(lsd_list$dfm), 25L)
+  expect_equal(levels(lsd_vec$dfm$Row), paste0("r", 1:5))
+  expect_equal(levels(lsd_list$dfm$Row), paste0("r", 1:5))
+})
+
 test_that("plot method runs without error", {
   crd <- gexp(
     mu  = 15,

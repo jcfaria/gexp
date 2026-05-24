@@ -76,8 +76,8 @@ plot.gexp.simple_rcbd <- function(x,
 
   rowsquare <- length(levelsblock)
 
-  centers <- .gexp_plot_centers(rowsquare,
-                                columsquare)
+  centers <- .gexp_plot_centers(columsquare,
+                                rowsquare)
   posxcentro <- centers$posxcentro
   posycentro <- centers$posycentro
 

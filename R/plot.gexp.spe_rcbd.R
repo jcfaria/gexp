@@ -119,8 +119,7 @@ plot.gexp.spe_rcbd <- function(x,
     .gexp_plot_text_spe_plot(posxcentro,
                              posycentro,
                              Labelsplot,
-                             coltext,
-                             swap = TRUE)
+                             coltext)
 
     .gexp_plot_text_spe_sub(subposxcentro,
                             subposycentro,

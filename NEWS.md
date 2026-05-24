@@ -10,6 +10,9 @@
 - Added split-plot helpers (`.gexp_zformula`, `.gexp_Z`, `.gexp_spe_finish`) for whole-plot `Z` matrix construction and the shared SPE response tail; `gexp.spe_crd`, `gexp.spe_rcbd`, and `gexp.spe_lsd` now use them (behaviour unchanged).
 - Added `R/gexp-plot-utils.R` with shared helpers for layout centres, static/dynamic frames, grids, labels, and locator text; all nine `plot.gexp.*` methods now use them.
 - Fixed plot label coordinates when row and column centre vectors differ in length (e.g. factorial RCBD and split-plot layouts).
+- Fixed LSD `rowl`/`coll` when passed as bare character vectors (default names `Row`/`Column`); named lists remain the documented form.
+- Fixed factorial and CRD plot label placement (overlapping treatment labels in empty cells) by restoring correct `rep()` coordinates in `gexp-plot-utils.R`.
+- Fixed SIMPLE RCBD plot layout (block labels misaligned with rows) by restoring row/column centre assignment in `plot.gexp.simple_rcbd.R`.
 
 ### Code style
 - Reformatted all sources under `R/` for readability (aligned named arguments, consistent spacing, and line breaks at commas) without changing program logic.
@@ -18,7 +21,7 @@
 - Revised vignette prose: improved English and translated remaining Portuguese passages.
 
 ### Documentation
-- Added `demo/` with nine runnable examples (`demo(package = "gexp")`) covering every `type` x `design` combination (SIMPLE, FE, SPE x CRD, RCBD, LSD).
+- Added `demo/` with nine runnable examples (`demo(package = "gexp")`) covering every `type` x `design` combination (SIMPLE, FE, SPE x CRD, RCBD, LSD); all demos use explicit `fl`, `blkl`, `rowl`, and `coll` labels where applicable.
 - Standardized author names to scientific notation (`Faria, J. C.`; `Allaman, I. B.`) across the package.
 - Migrated package history from `ChangeLog` to `NEWS.md`.
 - Refactored `README.md` to match the documentation standard used in sibling packages (badges, features, installation, quick start, project layout, contributing, and roadmap).

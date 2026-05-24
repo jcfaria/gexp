@@ -114,7 +114,8 @@
                                 coltext)
 {
   text(x = rep(posxcentro,
-               length(posycentro)),
+               rep(length(posycentro),
+                   length(posxcentro))),
        y = rep(posycentro,
                length(posxcentro)),
        labels,
@@ -131,14 +132,16 @@
     text(x = rep(posycentro,
                  length(posxcentro)),
          y = rep(posxcentro,
-                 length(posycentro)),
+                 rep(length(posycentro),
+                     length(posxcentro))),
          labels,
          col = coltext)
   } else {
     text(x = rep(posxcentro,
                  length(posycentro)),
          y = rep(posycentro,
-                 length(posxcentro)),
+                 rep(length(posxcentro),
+                     length(posycentro))),
          labels,
          col = coltext,
          srt = srt)
@@ -148,11 +151,11 @@
 .gexp_plot_text_spe_plot <- function(posxcentro,
                                      posycentro,
                                      labels,
-                                     coltext,
-                                     swap = FALSE)
+                                     coltext)
 {
   text(x = rep(posxcentro,
-               length(posycentro)),
+               rep(length(posycentro),
+                   length(posxcentro))),
        y = rep(posycentro,
                length(posxcentro)),
        labels,
@@ -168,7 +171,8 @@
   text(x = rep(subposxcentro,
                length(subposycentro)),
        y = rep(subposycentro,
-               length(subposxcentro)),
+               rep(length(subposxcentro),
+                   length(subposycentro))),
        labels,
        srt = srttext,
        col = colgrid)

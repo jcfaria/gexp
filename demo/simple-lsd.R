@@ -2,10 +2,12 @@
 ## SIMPLE + LSD: Latin square design (r is set to 1 internally)
 ##
 ## trt: fe then fl. Rows: rowe then rowl. Columns: cole then coll.
+## 5 x 5 Latin square -> 12 error df in ANOVA (Y1 ~ Row + Col + trt).
 ##
 
 library(gexp)
 
+# 'err' is optional; if omitted, a normal error is used with mean = 1 and standard deviation = 0.
 lsd <- gexp(mu     = 10,
             err    = matrix(0,
                             nrow = 25,

@@ -2,23 +2,27 @@
 ## SPE + LSD: split-plot, Latin square design (r is set to 1 internally)
 ##
 ## Factors: fe then fl. Rows: rowe then rowl. Columns: cole then coll.
+## inte: interaction effects (one value per main:sub combination; length = 4 x 2 = 8).
+## 4 main levels (4 x 4 Latin square) x 2 sub-plot levels -> 12 within-plot error df.
 ##
 
 library(gexp)
 
-spe_lsd <- gexp(mu     = 20,
+# 'err' is optional; if omitted, a normal error is used with mean = 1 and standard deviation = 0.
+spe_lsd <- gexp(mu     = 10,
                 err    = matrix(0,
-                                nrow = 18,
+                                nrow = 32,
                                 ncol = 1),
                 r      = 1,
-                fe     = list(main = c(2, 0, -2),
+                fe     = list(main = c(3, 1, -1, -3),
                               sub  = c(1, -1)),
-                fl     = list(main = paste0('p', 1:3),
+                fl     = list(main = paste0('p', 1:4),
                               sub  = paste0('sp', 1:2)),
-                rowe   = c(0, 1, 2),
-                rowl   = list(Row = paste0('r', 1:3)),
-                cole   = c(0, 1, 2),
-                coll   = list(Col = paste0('l', 1:3)),
+                inte   = c(1, 1, 1, 1, 2, 1, 1, 1),
+                rowe   = 0:3,
+                rowl   = list(Row = paste0('r', 1:4)),
+                cole   = 0:3,
+                coll   = list(Col = paste0('l', 1:4)),
                 type   = "SPE",
                 design = "LSD")
 
@@ -27,4 +31,32 @@ summary(spe_lsd)
 
 if (interactive()) {
   plot(spe_lsd)
+
+  opar <- par(mfrow = c(2, 1))
+  with(spe_lsd$dfm, {
+    cols <- c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3")
+    interaction.plot(x.factor     = main,
+                     trace.factor = sub,
+                     response     = Y1,
+                     fun          = mean,
+                     type         = "b",
+                     col          = cols[seq_len(nlevels(sub))],
+                     legend       = TRUE,
+                     trace.label  = "sub-plot",
+                     xlab         = "whole-plot (main)",
+                     ylab         = "Mean Y1",
+                     main         = "whole-plot on x-axis")
+    interaction.plot(x.factor     = sub,
+                     trace.factor = main,
+                     response     = Y1,
+                     fun          = mean,
+                     type         = "b",
+                     col          = cols[seq_len(nlevels(main))],
+                     legend       = TRUE,
+                     trace.label  = "whole-plot",
+                     xlab         = "sub-plot",
+                     ylab         = "Mean Y1",
+                     main         = "sub-plot on x-axis")
+  })
+  par(opar)
 }

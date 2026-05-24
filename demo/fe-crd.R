@@ -3,6 +3,11 @@
 ##
 ## Two factors: fe (effects) before fl (labels) for each; same name in both lists.
 ## inte: interaction effects (one value per gen:nit combination; length = 3 x 3 = 9).
+##      Derived from outer(gen, nit), shifted to positive values (gen rows x nit cols):
+##           n1  n2  n3
+##      g1   13   7   1
+##      g2    7   7   7
+##      g3    1   7  13
 ## 9 treatment combinations x 3 replications -> 18 error df in ANOVA (Y1 ~ gen * nit).
 ##
 
@@ -18,9 +23,9 @@ fe_crd <- gexp(mu     = 10,
                              nit = c(3, 0, -3)),
                fl     = list(gen = paste0('g', 1:3),
                              nit = paste0('n', 1:3)),
-               inte   = c(1, 1, 1,
-                          1, 2, 1,
-                          1, 1, 1),
+               inte   = c(13, 7,  1,
+                           7, 7,  7,
+                           1, 7, 13),
                type   = "FE",
                design = "CRD")
 
@@ -28,12 +33,12 @@ print(fe_crd)
 summary(fe_crd)
 
 if (interactive()) {
+  plot(fe_crd)
+
   plot(fe_crd,
        random = FALSE)
 
-  plot(fe_crd)
-
-  # Interaction plots (stats::interaction.plot): parallel lines suggest no interaction.
+  # Interaction plots (stats::interaction.plot): non-parallel lines indicate interaction.
   opar <- par(mfrow = c(2, 1))
   with(fe_crd$dfm, {
     cols <- c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3")

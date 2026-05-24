@@ -3,6 +3,11 @@
 ##
 ## Factors: fe then fl. Rows: rowe then rowl. Columns: cole then coll.
 ## inte: interaction effects (one value per gen:nit combination; length = 3 x 3 = 9).
+##      Derived from outer(gen, nit), shifted to positive values (gen rows x nit cols):
+##           n1  n2  n3
+##      g1   13   7   1
+##      g2    7   7   7
+##      g3    1   7  13
 ## Nine treatment combinations in a 9 x 9 Latin square (81 experimental units).
 ## 56 error df in ANOVA (Y1 ~ Row + Col + gen * nit).
 ##
@@ -19,9 +24,9 @@ fe_lsd <- gexp(mu     = 10,
                              nit = c(3, 0, -3)),
                fl     = list(gen = paste0('g', 1:3),
                              nit = paste0('n', 1:3)),
-               inte   = c(1, 1, 1,
-                          1, 2, 1,
-                          1, 1, 1),
+               inte   = c(13, 7,  1,
+                           7, 7,  7,
+                           1, 7, 13),
                rowe   = 0:8,
                rowl   = list(Row = paste0('r', 1:9)),
                cole   = 0:8,

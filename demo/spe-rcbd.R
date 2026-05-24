@@ -3,6 +3,11 @@
 ##
 ## Factors: fe then fl. Blocks: blke then blkl.
 ## inte: interaction effects (one value per main:sub combination; length = 3 x 2 = 6).
+##      Derived from outer(main, sub), shifted to positive values (main rows x sub cols):
+##           sp1  sp2
+##      p1     5    1
+##      p2     3    3
+##      p3     1    5
 ## 3 main x 2 sub x 6 blocks -> 15 within-plot error df
 ## (Y1 ~ blk + main * sub + Error(blk/main); plot stratum df is not required >= 12).
 ##
@@ -19,7 +24,8 @@ spe_rcbd <- gexp(mu     = 10,
                                sub  = c(1, -1)),
                  fl     = list(main = paste0('p', 1:3),
                                sub  = paste0('sp', 1:2)),
-                 inte   = c(1, 1, 2, 1, 1, 1),
+                 inte   = c(5, 3, 1,
+                            1, 3, 5),
                  blke   = 0:5,
                  blkl   = list(blk = paste0('b', 1:6)),
                  type   = "SPE",

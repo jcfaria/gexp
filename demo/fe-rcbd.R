@@ -3,6 +3,10 @@
 ##
 ## Factors: fe then fl. Blocks: blke then blkl.
 ## inte: interaction effects (one value per gen:nit combination; length = 2 x 2 = 4).
+##      Derived from outer(gen, nit), shifted to positive values (gen rows x nit cols):
+##           n1  n2
+##      g1    5   1
+##      g2    1   5
 ## 4 treatments x 7 blocks -> 18 error df in ANOVA (Y1 ~ blk + gen * nit).
 ##
 
@@ -18,7 +22,8 @@ fe_rcbd <- gexp(mu     = 10,
                               nit = c(2, -2)),
                 fl     = list(gen = paste0('g', 1:2),
                               nit = paste0('n', 1:2)),
-                inte   = c(1, 1, 2, 1),
+                inte   = c(5, 1,
+                           1, 5),
                 blke   = 0:6,
                 blkl   = list(blk = paste0('b', 1:7)),
                 type   = "FE",

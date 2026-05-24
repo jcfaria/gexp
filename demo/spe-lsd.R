@@ -3,6 +3,12 @@
 ##
 ## Factors: fe then fl. Rows: rowe then rowl. Columns: cole then coll.
 ## inte: interaction effects (one value per main:sub combination; length = 4 x 2 = 8).
+##      Derived from outer(main, sub), shifted to positive values (main rows x sub cols):
+##           sp1  sp2
+##      p1     7    1
+##      p2     5    3
+##      p3     3    5
+##      p4     1    7
 ## 4 main levels (4 x 4 Latin square) x 2 sub-plot levels -> 12 within-plot error df.
 ##
 
@@ -18,7 +24,8 @@ spe_lsd <- gexp(mu     = 10,
                               sub  = c(1, -1)),
                 fl     = list(main = paste0('p', 1:4),
                               sub  = paste0('sp', 1:2)),
-                inte   = c(1, 1, 1, 1, 2, 1, 1, 1),
+                inte   = c(7, 5, 3, 1,
+                           1, 3, 5, 7),
                 rowe   = 0:3,
                 rowl   = list(Row = paste0('r', 1:4)),
                 cole   = 0:3,

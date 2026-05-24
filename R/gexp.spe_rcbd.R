@@ -56,24 +56,7 @@ gexp.spe_rcbd <- function(x, ...)
   plott <- c(facplott,
              names(factors)[2])
 
-  zformula <- paste('list(',
-                    paste(plott,
-                          paste('= contrasts(dados$',
-                                plott,
-                                sep = ''),
-                          ',',
-                          'contrasts = FALSE)',
-                          collapse = ','),
-                    ')')
+  Z <- .gexp_Z(dados, cformulaplot, plott, spaced = TRUE)
 
-  Z <- model.matrix(eval(parse(text = cformulaplot)),
-                    dados,
-                    contrasts.arg = eval(parse(text = zformula)))
-
-  e <- .gexp_err(x, dim(XB$XB)[1])
-  e_plot <- .gexp_errp(x, Z)
-  Y <- .gexp_response(x, XB, e, Z = Z, e_plot = e_plot)
-  dfm <- .gexp_bind_dfm(x, dados, Y)
-
-  return(.gexp_pack(x, XB, Z, Y, dfm))
+  return(.gexp_spe_finish(x, XB, Z, dados))
 }

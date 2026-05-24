@@ -181,3 +181,37 @@
 
   x
 }
+
+.gexp_zformula <- function(plott, spaced = FALSE)
+{
+  contrast_opt <- if (spaced) 'contrasts = FALSE)' else 'contrasts=FALSE)'
+
+  paste('list(',
+        paste(plott,
+              paste('= contrasts(dados$',
+                    plott,
+                    sep = ''),
+              ',',
+              contrast_opt,
+              collapse = ','),
+        ')')
+}
+
+.gexp_Z <- function(dados, cformulaplot, plott, spaced = FALSE)
+{
+  zformula <- .gexp_zformula(plott, spaced)
+
+  model.matrix(eval(parse(text = cformulaplot)),
+               dados,
+               contrasts.arg = eval(parse(text = zformula)))
+}
+
+.gexp_spe_finish <- function(x, XB, Z, dados)
+{
+  e <- .gexp_err(x, dim(XB$XB)[1])
+  e_plot <- .gexp_errp(x, Z)
+  Y <- .gexp_response(x, XB, e, Z = Z, e_plot = e_plot)
+  dfm <- .gexp_bind_dfm(x, dados, Y)
+
+  .gexp_pack(x, XB, Z, Y, dfm)
+}

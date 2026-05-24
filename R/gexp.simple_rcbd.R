@@ -8,7 +8,10 @@ gexp.simple_rcbd <- function(x, ...)
   factors <- list(r = 1:x$r)
   contrast <- list()
 
-  blk <- .gexp_block_setup(x, blke, factors, contrast)
+  blk <- .gexp_block_setup(x,
+                           blke,
+                           factors,
+                           contrast)
   factors <- blk$factors
   contrast <- blk$contrast
 
@@ -43,9 +46,18 @@ gexp.simple_rcbd <- function(x, ...)
 
   Z <- NULL
 
-  e <- .gexp_err(x, dim(XB$XB)[1])
-  Y <- .gexp_response(x, XB, e)
-  dfm <- .gexp_bind_dfm(x, dados, Y)
+  e <- .gexp_err(x,
+                 dim(XB$XB)[1])
+  Y <- .gexp_response(x,
+                      XB,
+                      e)
+  dfm <- .gexp_bind_dfm(x,
+                        dados,
+                        Y)
 
-  return(.gexp_pack(x, XB, Z, Y, dfm))
+  return(.gexp_pack(x,
+                    XB,
+                    Z,
+                    Y,
+                    dfm))
 }

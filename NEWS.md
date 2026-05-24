@@ -13,6 +13,7 @@
 
 ### Code style
 - Reformatted all sources under `R/` for readability (aligned named arguments, consistent spacing, and line breaks at commas) without changing program logic.
+- Re-applied the same formatting to `gexp-utils.R`, `gexp-plot-utils.R`, and all `gexp.*` / `plot.gexp.*` methods after the internal refactor (multi-argument calls broken at commas, named arguments aligned).
 - Renamed `vignettes/intro.Rmd` to `vignettes/gexp-overview.Rmd` with conventional R code spacing in examples (aligned with standard style, distinct from `/R` sources).
 - Revised vignette prose: improved English and translated remaining Portuguese passages.
 

@@ -1,7 +1,8 @@
 # gexp-utils.R — internal shared helpers for the gexp package.
 # None of these functions is exported.
 
-.gexp_err <- function(x, n)
+.gexp_err <- function(x,
+                      n)
 {
   if (is.null(x$err)) {
     mvtnorm::rmvnorm(n     = n,
@@ -14,7 +15,8 @@
   }
 }
 
-.gexp_errp <- function(x, Z)
+.gexp_errp <- function(x,
+                       Z)
 {
   if (is.null(x$errp)) {
     mvtnorm::rmvnorm(n     = ncol(Z),
@@ -27,7 +29,11 @@
   }
 }
 
-.gexp_response <- function(x, XB, e, Z = NULL, e_plot = NULL)
+.gexp_response <- function(x,
+                           XB,
+                           e,
+                           Z      = NULL,
+                           e_plot = NULL)
 {
   if (is.null(Z)) {
     yl <- XB$XB + e
@@ -42,7 +48,9 @@
   round(yl, x$round)
 }
 
-.gexp_bind_dfm <- function(x, dados, Y)
+.gexp_bind_dfm <- function(x,
+                          dados,
+                          Y)
 {
   if (!x$qualiquanti$quali) {
     dados <- lapply(dados,
@@ -56,7 +64,11 @@
   cbind(dados, Y)
 }
 
-.gexp_pack <- function(x, XB, Z, Y, dfm)
+.gexp_pack <- function(x,
+                       XB,
+                       Z,
+                       Y,
+                       dfm)
 {
   res <- list(X   = XB$X,
               Z   = Z,
@@ -72,7 +84,8 @@
   res
 }
 
-.gexp_contrasts_merge <- function(contrast, x)
+.gexp_contrasts_merge <- function(contrast,
+                                  x)
 {
   if (!is.null(x$contrasts)) {
     contrast[names(x$contrasts)] <- x$contrasts
@@ -82,24 +95,28 @@
   }
 }
 
-.gexp_fe <- function(x, template)
+.gexp_fe <- function(x,
+                     template)
 {
   if (is.null(x$fe)) template else x$fe
 }
 
-.gexp_blke <- function(x, default = rep(1, 3))
+.gexp_blke <- function(x,
+                       default = rep(1, 3))
 {
   if (is.null(x$blke)) default else x$blke
 }
 
-.gexp_inte <- function(x, fe)
+.gexp_inte <- function(x,
+                       fe)
 {
   makeInteraction(mu   = x$mu,
                   fe   = fe,
                   inte = x$inte)
 }
 
-.gexp_treatments <- function(x, fe)
+.gexp_treatments <- function(x,
+                             fe)
 {
   makeTreatments(fl        = x$fl,
                  fe        = fe,
@@ -108,7 +125,8 @@
                  posquanti = x$qualiquanti$posquanti)
 }
 
-.gexp_treatment_contrasts <- function(x, treatments)
+.gexp_treatment_contrasts <- function(x,
+                                      treatments)
 {
   makeContrasts(factors   = treatments,
                 quali     = x$qualiquanti$quali,
@@ -116,7 +134,10 @@
                 posquanti = x$qualiquanti$posquanti)
 }
 
-.gexp_block_setup <- function(x, blke, factors, contrast = list())
+.gexp_block_setup <- function(x,
+                              blke,
+                              factors,
+                              contrast = list())
 {
   if (is.null(x$blkl)) {
     factors$Block <- factor(1:dim(as.matrix(blke))[1])
@@ -130,7 +151,8 @@
        contrast = contrast)
 }
 
-.gexp_rowe_cole_simple <- function(x, fe)
+.gexp_rowe_cole_simple <- function(x,
+                                   fe)
 {
   rowe <- if (is.null(x$rowe)) unlist(fe) else x$rowe
   cole <- if (is.null(x$cole)) rowe else x$cole
@@ -139,7 +161,8 @@
        cole = cole)
 }
 
-.gexp_rowe_cole_fe <- function(x, n)
+.gexp_rowe_cole_fe <- function(x,
+                               n)
 {
   rowe <- if (is.null(x$rowe)) rep(1, n) else x$rowe
   cole <- if (is.null(x$cole)) rowe else x$cole
@@ -148,7 +171,10 @@
        cole = cole)
 }
 
-.gexp_rowcolumn_setup <- function(x, rowe, cole, contrast)
+.gexp_rowcolumn_setup <- function(x,
+                                 rowe,
+                                 cole,
+                                 contrast)
 {
   rowcolumn <- list()
 
@@ -182,7 +208,8 @@
   x
 }
 
-.gexp_zformula <- function(plott, spaced = FALSE)
+.gexp_zformula <- function(plott,
+                           spaced = FALSE)
 {
   contrast_opt <- if (spaced) 'contrasts = FALSE)' else 'contrasts=FALSE)'
 
@@ -197,21 +224,40 @@
         ')')
 }
 
-.gexp_Z <- function(dados, cformulaplot, plott, spaced = FALSE)
+.gexp_Z <- function(dados,
+                    cformulaplot,
+                    plott,
+                    spaced = FALSE)
 {
-  zformula <- .gexp_zformula(plott, spaced)
+  zformula <- .gexp_zformula(plott,
+                             spaced)
 
   model.matrix(eval(parse(text = cformulaplot)),
                dados,
                contrasts.arg = eval(parse(text = zformula)))
 }
 
-.gexp_spe_finish <- function(x, XB, Z, dados)
+.gexp_spe_finish <- function(x,
+                             XB,
+                             Z,
+                             dados)
 {
-  e <- .gexp_err(x, dim(XB$XB)[1])
-  e_plot <- .gexp_errp(x, Z)
-  Y <- .gexp_response(x, XB, e, Z = Z, e_plot = e_plot)
-  dfm <- .gexp_bind_dfm(x, dados, Y)
+  e <- .gexp_err(x,
+                 dim(XB$XB)[1])
+  e_plot <- .gexp_errp(x,
+                       Z)
+  Y <- .gexp_response(x,
+                      XB,
+                      e,
+                      Z      = Z,
+                      e_plot = e_plot)
+  dfm <- .gexp_bind_dfm(x,
+                        dados,
+                        Y)
 
-  .gexp_pack(x, XB, Z, Y, dfm)
+  .gexp_pack(x,
+             XB,
+             Z,
+             Y,
+             dfm)
 }

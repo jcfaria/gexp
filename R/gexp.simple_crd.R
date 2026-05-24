@@ -33,9 +33,18 @@ gexp.simple_crd <- function(x, ...)
 
   Z <- NULL
 
-  e <- .gexp_err(x, dim(XB$XB)[1])
-  Y <- .gexp_response(x, XB, e)
-  dfm <- .gexp_bind_dfm(x, dados, Y)
+  e <- .gexp_err(x,
+                 dim(XB$XB)[1])
+  Y <- .gexp_response(x,
+                      XB,
+                      e)
+  dfm <- .gexp_bind_dfm(x,
+                        dados,
+                        Y)
 
-  return(.gexp_pack(x, XB, Z, Y, dfm))
+  return(.gexp_pack(x,
+                    XB,
+                    Z,
+                    Y,
+                    dfm))
 }

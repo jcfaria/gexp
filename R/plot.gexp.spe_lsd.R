@@ -93,28 +93,55 @@ plot.gexp.spe_lsd <- function(x,
 
   ncol_sub <- length(levelsinter) * length(levelsfac[[1]])
 
-  subcenters <- .gexp_plot_sub_centers(rowsquare, ncol_sub)
+  subcenters <- .gexp_plot_sub_centers(rowsquare,
+                                      ncol_sub)
   subposxcentro <- subcenters$subposxcentro
   subposycentro <- subcenters$subposycentro
 
   if (!dynamic) {
-    op <- .gexp_plot_static_open(main = main, sub = sub, cex.sub = 0.8, ...)
+    op <- .gexp_plot_static_open(main    = main,
+                                 sub     = sub,
+                                 cex.sub = 0.8,
+                                 ...)
 
-    .gexp_plot_grid_spe(columsquare, rowsquare, levelsinter, colgrid, ltygrid, lwdgrid)
+    .gexp_plot_grid_spe(columsquare,
+                        rowsquare,
+                        levelsinter,
+                        colgrid,
+                        ltygrid,
+                        lwdgrid)
 
-    .gexp_plot_text_spe_plot(posxcentro, posycentro, Labelsplot, coltext, swap = TRUE)
+    .gexp_plot_text_spe_plot(posxcentro,
+                             posycentro,
+                             Labelsplot,
+                             coltext,
+                             swap = TRUE)
 
-    .gexp_plot_text_spe_sub(subposxcentro, subposycentro, treat, colgrid, srttext)
+    .gexp_plot_text_spe_sub(subposxcentro,
+                            subposycentro,
+                            treat,
+                            colgrid,
+                            srttext)
 
     .gexp_plot_arrows_row(rowsquare)
     .gexp_plot_arrows_col(rowsquare)
 
-    .gexp_plot_label_row(posxcentro, levelsrow, colgrid)
-    .gexp_plot_label_col(posxcentro, levelscol, colgrid)
+    .gexp_plot_label_row(posxcentro,
+                         levelsrow,
+                         colgrid)
+    .gexp_plot_label_col(posxcentro,
+                         levelscol,
+                         colgrid)
 
     .gexp_plot_static_close(op)
   } else {
-    .gexp_plot_dynamic_frame(main, sub, xleftimg, ybottomimg, xrightimg, ytopimg, ...)
+    .gexp_plot_dynamic_frame(main       = main,
+                             sub        = sub,
+                             xleftimg   = xleftimg,
+                             ybottomimg = ybottomimg,
+                             xrightimg  = xrightimg,
+                             ytopimg    = ytopimg,
+                             ...)
 
     .gexp_plot_locator_text(levelsrow,
                             coltext,

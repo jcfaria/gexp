@@ -85,17 +85,37 @@ plot.gexp.spe_crd <- function(x,
   subposycentro <- subcenters$subposycentro
 
   if (!dynamic) {
-    op <- .gexp_plot_static_open(main = main, sub = sub, ...)
+    op <- .gexp_plot_static_open(main = main,
+                                 sub  = sub,
+                                 ...)
 
-    .gexp_plot_grid_spe(columsquare, rowsquare, levelsinter, colgrid, ltygrid, lwdgrid)
+    .gexp_plot_grid_spe(columsquare,
+                        rowsquare,
+                        levelsinter,
+                        colgrid,
+                        ltygrid,
+                        lwdgrid)
 
-    .gexp_plot_text_spe_plot(posxcentro, posycentro, Labelsplot, coltext)
+    .gexp_plot_text_spe_plot(posxcentro,
+                             posycentro,
+                             Labelsplot,
+                             coltext)
 
-    .gexp_plot_text_spe_sub(subposxcentro, subposycentro, treat, colgrid, srttext)
+    .gexp_plot_text_spe_sub(subposxcentro,
+                        subposycentro,
+                        treat,
+                        colgrid,
+                        srttext)
 
     .gexp_plot_static_close(op)
   } else {
-    .gexp_plot_dynamic_frame(main, sub, xleftimg, ybottomimg, xrightimg, ytopimg, ...)
+    .gexp_plot_dynamic_frame(main       = main,
+                             sub        = sub,
+                             xleftimg   = xleftimg,
+                             ybottomimg = ybottomimg,
+                             xrightimg  = xrightimg,
+                             ytopimg    = ytopimg,
+                             ...)
 
     .gexp_plot_locator_text(Labelsplot,
                             coltext,

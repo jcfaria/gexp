@@ -43,7 +43,12 @@ gexp.spe_crd <- function(x, ...)
 
   plott <- c(facplott, 'r')
 
-  Z <- .gexp_Z(dados, cformulaplot, plott)
+  Z <- .gexp_Z(dados,
+               cformulaplot,
+               plott)
 
-  return(.gexp_spe_finish(x, XB, Z, dados))
+  return(.gexp_spe_finish(x,
+                          XB,
+                          Z,
+                          dados))
 }

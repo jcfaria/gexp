@@ -78,21 +78,40 @@ plot.gexp.fe_lsd <- function(x,
   posycentro <- centers$posycentro
 
   if (!dynamic) {
-    op <- .gexp_plot_static_open(main = main, sub = sub, ...)
+    op <- .gexp_plot_static_open(main = main,
+                                 sub  = sub,
+                                 ...)
 
-    .gexp_plot_grid(columsquare, rowsquare, colgrid, ltygrid, lwdgrid)
+    .gexp_plot_grid(columsquare,
+                    rowsquare,
+                    colgrid,
+                    ltygrid,
+                    lwdgrid)
 
-    .gexp_plot_text_rcbd(posxcentro, posycentro, treat, coltext)
+    .gexp_plot_text_rcbd(posxcentro,
+                         posycentro,
+                         treat,
+                         coltext)
 
     .gexp_plot_arrows_row(rowsquare)
     .gexp_plot_arrows_col(rowsquare)
 
-    .gexp_plot_label_row(posxcentro, levelsrow, colgrid)
-    .gexp_plot_label_col(posxcentro, levelscol, colgrid)
+    .gexp_plot_label_row(posxcentro,
+                         levelsrow,
+                         colgrid)
+    .gexp_plot_label_col(posxcentro,
+                         levelscol,
+                         colgrid)
 
     .gexp_plot_static_close(op)
   } else {
-    .gexp_plot_dynamic_frame(main, sub, xleftimg, ybottomimg, xrightimg, ytopimg, ...)
+    .gexp_plot_dynamic_frame(main       = main,
+                             sub        = sub,
+                             xleftimg   = xleftimg,
+                             ybottomimg = ybottomimg,
+                             xrightimg  = xrightimg,
+                             ytopimg    = ytopimg,
+                             ...)
 
     .gexp_plot_locator_text(paste(labelrow,
                                    1:rowsquare),
@@ -102,6 +121,7 @@ plot.gexp.fe_lsd <- function(x,
                                    1:columsquare),
                             coltext)
 
-    .gexp_plot_locator_text(treat, coltext)
+    .gexp_plot_locator_text(treat,
+                            coltext)
   }
 }

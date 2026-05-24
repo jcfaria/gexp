@@ -46,26 +46,44 @@ plot.gexp.simple_crd <- function(x,
                  repp)
   }
 
-  treat <- .gexp_plot_random_rep(levelss, repp, random)
+  treat <- .gexp_plot_random_rep(levelss,
+                        repp,
+                        random)
 
   rowsquare <- length(levelss)
 
   columsquare <- repp
 
-  centers <- .gexp_plot_centers(rowsquare, columsquare)
+  centers <- .gexp_plot_centers(rowsquare,
+                                columsquare)
   posxcentro <- centers$posxcentro
   posycentro <- centers$posycentro
 
   if (!dynamic) {
-    op <- .gexp_plot_static_open(main = main, sub = sub, ...)
+    op <- .gexp_plot_static_open(main = main,
+                                 sub  = sub,
+                                 ...)
 
-    .gexp_plot_grid(columsquare, rowsquare, colgrid, ltygrid, lwdgrid)
+    .gexp_plot_grid(columsquare,
+                    rowsquare,
+                    colgrid,
+                    ltygrid,
+                    lwdgrid)
 
-    .gexp_plot_text_crd(posxcentro, posycentro, treat, coltext)
+    .gexp_plot_text_crd(posxcentro,
+                        posycentro,
+                        treat,
+                        coltext)
 
     .gexp_plot_static_close(op)
   } else {
-    .gexp_plot_dynamic_frame(main, sub, xleftimg, ybottomimg, xrightimg, ytopimg, ...)
+    .gexp_plot_dynamic_frame(main       = main,
+                             sub        = sub,
+                             xleftimg   = xleftimg,
+                             ybottomimg = ybottomimg,
+                             xrightimg  = xrightimg,
+                             ytopimg    = ytopimg,
+                             ...)
 
     .gexp_plot_locator_text(treat,
                             coltext,

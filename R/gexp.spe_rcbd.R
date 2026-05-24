@@ -9,7 +9,10 @@ gexp.spe_rcbd <- function(x, ...)
   factors <- list(r = 1:x$r)
   contrast <- list()
 
-  blk <- .gexp_block_setup(x, blke, factors, contrast)
+  blk <- .gexp_block_setup(x,
+                           blke,
+                           factors,
+                           contrast)
   factors <- blk$factors
   contrast <- blk$contrast
 
@@ -56,7 +59,13 @@ gexp.spe_rcbd <- function(x, ...)
   plott <- c(facplott,
              names(factors)[2])
 
-  Z <- .gexp_Z(dados, cformulaplot, plott, spaced = TRUE)
+  Z <- .gexp_Z(dados,
+               cformulaplot,
+               plott,
+               spaced = TRUE)
 
-  return(.gexp_spe_finish(x, XB, Z, dados))
+  return(.gexp_spe_finish(x,
+                          XB,
+                          Z,
+                          dados))
 }

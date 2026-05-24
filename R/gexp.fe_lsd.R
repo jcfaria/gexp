@@ -19,7 +19,10 @@ gexp.fe_lsd <- function(x, ...)
   rowe <- rc$rowe
   cole <- rc$cole
 
-  lsd <- .gexp_rowcolumn_setup(x, rowe, cole, contrast)
+  lsd <- .gexp_rowcolumn_setup(x,
+                               rowe,
+                               cole,
+                               contrast)
   rowcolumn <- lsd$rowcolumn
   contrast <- lsd$contrast
 
@@ -74,9 +77,18 @@ gexp.fe_lsd <- function(x, ...)
 
   Z <- NULL
 
-  e <- .gexp_err(x, dim(XB$XB)[1])
-  Y <- .gexp_response(x, XB, e)
-  dfm <- .gexp_bind_dfm(x, dados, Y)
+  e <- .gexp_err(x,
+                 dim(XB$XB)[1])
+  Y <- .gexp_response(x,
+                      XB,
+                      e)
+  dfm <- .gexp_bind_dfm(x,
+                        dados,
+                        Y)
 
-  return(.gexp_pack(x, XB, Z, Y, dfm))
+  return(.gexp_pack(x,
+                    XB,
+                    Z,
+                    Y,
+                    dfm))
 }

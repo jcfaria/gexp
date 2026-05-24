@@ -1,37 +1,49 @@
 # gexp-plot-utils.R — internal shared helpers for plot.gexp.* methods.
 # None of these functions is exported.
 
-.gexp_plot_seq_centers <- function(n, start = 1 / n)
+.gexp_plot_seq_centers <- function(n,
+                                   start = 1 / n)
 {
   aux0 <- start
   aux1 <- aux0 + ((n - 1) * 2 / n)
   seq(aux0, aux1, by = 2 / n)
 }
 
-.gexp_plot_centers <- function(rowsquare, columsquare, y0 = NULL)
+.gexp_plot_centers <- function(rowsquare,
+                               columsquare,
+                               y0 = NULL)
 {
   if (is.null(y0)) {
     y0 <- 1 / rowsquare
   }
 
-  list(posxcentro = .gexp_plot_seq_centers(columsquare, 1 / columsquare),
-       posycentro = .gexp_plot_seq_centers(rowsquare, y0))
+  list(posxcentro = .gexp_plot_seq_centers(columsquare,
+                                           1 / columsquare),
+       posycentro = .gexp_plot_seq_centers(rowsquare,
+                                           y0))
 }
 
 .gexp_plot_centers_square <- function(n)
 {
-  pos <- .gexp_plot_seq_centers(n, 1 / n)
+  pos <- .gexp_plot_seq_centers(n,
+                                1 / n)
   list(posxcentro = pos,
        posycentro = pos)
 }
 
-.gexp_plot_sub_centers <- function(rowsquare, ncol_sub, y0 = 1 / rowsquare)
+.gexp_plot_sub_centers <- function(rowsquare,
+                                   ncol_sub,
+                                   y0 = 1 / rowsquare)
 {
-  list(subposxcentro = .gexp_plot_seq_centers(ncol_sub, 1 / ncol_sub),
-       subposycentro = .gexp_plot_seq_centers(rowsquare, y0))
+  list(subposxcentro = .gexp_plot_seq_centers(ncol_sub,
+                                              1 / ncol_sub),
+       subposycentro = .gexp_plot_seq_centers(rowsquare,
+                                              y0))
 }
 
-.gexp_plot_static_open <- function(main, sub, ...)
+.gexp_plot_static_open <- function(main,
+                                   sub,
+                                   ...)
 {
   op <- par('xaxs', 'yaxs')
 
@@ -59,7 +71,11 @@
   par(op)
 }
 
-.gexp_plot_grid <- function(columsquare, rowsquare, colgrid, ltygrid, lwdgrid)
+.gexp_plot_grid <- function(columsquare,
+                            rowsquare,
+                            colgrid,
+                            ltygrid,
+                            lwdgrid)
 {
   grid(nx = columsquare,
        ny = rowsquare,
@@ -68,7 +84,12 @@
        lwd = lwdgrid)
 }
 
-.gexp_plot_grid_spe <- function(columsquare, rowsquare, levelsinter, colgrid, ltygrid, lwdgrid)
+.gexp_plot_grid_spe <- function(columsquare,
+                                rowsquare,
+                                levelsinter,
+                                colgrid,
+                                ltygrid,
+                                lwdgrid)
 {
   grid(nx = columsquare,
        ny = rowsquare,
@@ -87,7 +108,10 @@
        lwd = lwdgrid)
 }
 
-.gexp_plot_text_crd <- function(posxcentro, posycentro, labels, coltext)
+.gexp_plot_text_crd <- function(posxcentro,
+                                posycentro,
+                                labels,
+                                coltext)
 {
   text(x = rep(posxcentro,
                length(posycentro)),
@@ -97,7 +121,11 @@
        col = coltext)
 }
 
-.gexp_plot_text_rcbd <- function(posxcentro, posycentro, labels, coltext, srt = NULL)
+.gexp_plot_text_rcbd <- function(posxcentro,
+                                 posycentro,
+                                 labels,
+                                 coltext,
+                                 srt = NULL)
 {
   if (is.null(srt)) {
     text(x = rep(posycentro,
@@ -117,7 +145,11 @@
   }
 }
 
-.gexp_plot_text_spe_plot <- function(posxcentro, posycentro, labels, coltext, swap = FALSE)
+.gexp_plot_text_spe_plot <- function(posxcentro,
+                                     posycentro,
+                                     labels,
+                                     coltext,
+                                     swap = FALSE)
 {
   text(x = rep(posxcentro,
                length(posycentro)),
@@ -127,7 +159,11 @@
        col = coltext)
 }
 
-.gexp_plot_text_spe_sub <- function(subposxcentro, subposycentro, labels, colgrid, srttext)
+.gexp_plot_text_spe_sub <- function(subposxcentro,
+                                    subposycentro,
+                                    labels,
+                                    colgrid,
+                                    srttext)
 {
   text(x = rep(subposxcentro,
                length(subposycentro)),
@@ -162,7 +198,9 @@
          length = 0.06)
 }
 
-.gexp_plot_label_row <- function(pos, labels, colgrid)
+.gexp_plot_label_row <- function(pos,
+                                 labels,
+                                 colgrid)
 {
   text(-0.08,
        pos,
@@ -172,7 +210,9 @@
        srt = 90)
 }
 
-.gexp_plot_label_col <- function(pos, labels, colgrid)
+.gexp_plot_label_col <- function(pos,
+                                 labels,
+                                 colgrid)
 {
   text(pos,
        2.08,
@@ -198,7 +238,13 @@
          JPG = jpeg::readJPEG(auxin))
 }
 
-.gexp_plot_dynamic_frame <- function(main, sub, xleftimg, ybottomimg, xrightimg, ytopimg, ...)
+.gexp_plot_dynamic_frame <- function(main,
+                                     sub,
+                                     xleftimg,
+                                     ybottomimg,
+                                     xrightimg,
+                                     ytopimg,
+                                     ...)
 {
   myimage <- .gexp_plot_read_image()
 
@@ -218,7 +264,10 @@
               ytop    = ytopimg)
 }
 
-.gexp_plot_locator_text <- function(labels, col, message = NULL, srt = NULL)
+.gexp_plot_locator_text <- function(labels,
+                                    col,
+                                    message = NULL,
+                                    srt     = NULL)
 {
   if (!is.null(message)) {
     tcltk::tkmessageBox(message = message)
@@ -238,7 +287,9 @@
   }
 }
 
-.gexp_plot_random_rep <- function(levels, repp, random)
+.gexp_plot_random_rep <- function(levels,
+                                  repp,
+                                  random)
 {
   if (!random) {
     rep(levels, repp)

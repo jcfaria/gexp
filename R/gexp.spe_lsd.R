@@ -18,7 +18,10 @@ gexp.spe_lsd <- function(x, ...)
   rowe <- rc$rowe
   cole <- rc$cole
 
-  lsd <- .gexp_rowcolumn_setup(x, rowe, cole, contrast)
+  lsd <- .gexp_rowcolumn_setup(x,
+                               rowe,
+                               cole,
+                               contrast)
   rowcolumn <- lsd$rowcolumn
   contrast <- lsd$contrast
 
@@ -112,7 +115,13 @@ gexp.spe_lsd <- function(x, ...)
   plott <- c(facplott,
              names(combrowcolumn))
 
-  Z <- .gexp_Z(dados, cformulaplot, plott, spaced = TRUE)
+  Z <- .gexp_Z(dados,
+               cformulaplot,
+               plott,
+               spaced = TRUE)
 
-  return(.gexp_spe_finish(x, XB, Z, dados))
+  return(.gexp_spe_finish(x,
+                          XB,
+                          Z,
+                          dados))
 }

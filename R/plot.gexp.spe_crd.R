@@ -1,7 +1,7 @@
 plot.gexp.spe_crd <- function(x,
                               main       = NULL,
                               sub        = NULL,
-                              colgrid    = 'red',                               
+                              colgrid    = 'red',
                               coltext    = 'blue',
                               srttext    = 30,
                               ltygrid    = 'dotted',
@@ -27,13 +27,13 @@ plot.gexp.spe_crd <- function(x,
 
   levelsinter <- levels(labelinter)
 
-  repp <- dim(x$X)[1]/(length(levelsinter)*length(levelsfac[[1]])) 
+  repp <- dim(x$X)[1]/(length(levelsinter)*length(levelsfac[[1]]))
 
-  if(is.null(main)){
+  if (is.null(main)) {
     main = 'Split plot Structure \n Completely Random Design'
   }
 
-  if(is.null(sub)){
+  if (is.null(sub)) {
     sub <- paste('Plot:',
                  labelfac[1],
                  '\n',
@@ -54,159 +54,75 @@ plot.gexp.spe_crd <- function(x,
                  repp)
   }
 
-  ifelse(random == FALSE,
-         {
-           treat <- rep(levelsinter,
-                        repp*length(levelsfac[[1]]))
-           Labelsplot <- rep(levelsfac[[1]],
-                             repp)
-         },
-         {
-           lplot <- rep(list(levelsinter),
-                        length(levelsfac[[1]])*repp)
-           rtreat <- lapply(lplot,
-                            sample)
-           treat <- unlist(rtreat)
-           Labelsplot <- sample(rep(levelsfac[[1]],
-                                    repp)) 
-         }) 
+  if (!random) {
+    treat <- rep(levelsinter,
+                 repp*length(levelsfac[[1]]))
+    Labelsplot <- rep(levelsfac[[1]],
+                      repp)
+  } else {
+    lplot <- rep(list(levelsinter),
+                 length(levelsfac[[1]])*repp)
+    rtreat <- lapply(lplot,
+                     sample)
+    treat <- unlist(rtreat)
+    Labelsplot <- sample(rep(levelsfac[[1]],
+                             repp))
+  }
 
   rowsquare <- length(levelsfac[[1]])
 
-  columsquare <- repp  
+  columsquare <- repp
 
-  aux_posxcentro <- 1/columsquare
+  centers <- .gexp_plot_centers(rowsquare,
+                                columsquare,
+                                y0 = 2 / rowsquare * 0.9)
+  posxcentro <- centers$posxcentro
+  posycentro <- centers$posycentro
 
-  aux_posxcentro1 <- aux_posxcentro + ((columsquare - 1)*2/columsquare)
+  subcenters <- .gexp_plot_sub_centers(rowsquare,
+                                       length(levelsinter) * repp)
+  subposxcentro <- subcenters$subposxcentro
+  subposycentro <- subcenters$subposycentro
 
-  posxcentro <- seq(aux_posxcentro, 
-                    aux_posxcentro1, 
-                    by = 2/columsquare)
+  if (!dynamic) {
+    op <- .gexp_plot_static_open(main = main,
+                                 sub  = sub,
+                                 ...)
 
-  aux_posycentro <- 2/rowsquare*0.9
+    .gexp_plot_grid_spe(columsquare,
+                        rowsquare,
+                        levelsinter,
+                        colgrid,
+                        ltygrid,
+                        lwdgrid)
 
-  aux_posycentro1 <- aux_posycentro + ((rowsquare - 1)*2/rowsquare)
+    .gexp_plot_text_spe_plot(posxcentro,
+                             posycentro,
+                             Labelsplot,
+                             coltext)
 
-  posycentro <- seq(aux_posycentro, 
-                    aux_posycentro1,
-                    by = 2/rowsquare)
+    .gexp_plot_text_spe_sub(subposxcentro,
+                        subposycentro,
+                        treat,
+                        colgrid,
+                        srttext)
 
-  auxsub_posxcentro <- 1/(length(levelsinter)*repp) 
-
-  auxsub_posxcentro1 <- auxsub_posxcentro + ((length(levelsinter)*repp - 1)*2/(length(levelsinter)*repp))
-
-  subposxcentro <- seq(auxsub_posxcentro,
-                       auxsub_posxcentro1, 
-                       by = 2/(length(levelsinter)*repp))
-
-  auxsub_posycentro <- 1/rowsquare
-
-  auxsub_posycentro1 <- auxsub_posycentro + ((rowsquare - 1)*2/rowsquare)
-
-  subposycentro <- seq(auxsub_posycentro, 
-                       auxsub_posycentro1,
-                       by = 2/rowsquare)
-
-  if(!dynamic){ 
-    op <- par('xaxs', 'yaxs') # Original par('xaxs', 'yaxs')
-
-    par(xaxs = 'i', 
-        yaxs = 'i')
-
-    plot(1,
-         type = 'n',
-         xlim = c(0, 2),
-         ylim = c(0, 2),
-         axes = FALSE,
-         xlab = '',
-         ylab = '',
-         main = main,
-         sub = sub,
-         ...)
-
-    box()
-
-    grid(nx = columsquare,
-         ny = rowsquare,
-         col = 1,
-         lty = 1,
-         lwd = 1) 
-
-    grid(nx = length(levelsinter)*repp,
-         ny = 1,
-         col = c(rep(colgrid, 
-                     length(levelsinter)-1), 
-                 1),
-         lty = c(rep(ltygrid, 
-                     length(levelsinter)-1), 
-                 'solid'),
-         lwd = lwdgrid)  
-
-    text(x = rep(posxcentro, 
-                 rep(length(posycentro), 
-                     length(posxcentro))),
-         y = rep(posycentro, 
-                 length(posxcentro)),
-         Labelsplot,
-         col = coltext)
-
-    text(x = rep(subposxcentro, 
-                 length(subposycentro)),
-         y = rep(subposycentro, 
-                 rep(length(subposxcentro), 
-                     length(subposycentro))),
-         treat,
-         srt = srttext,
-         col = colgrid) 
-    par(op) # Restoring the original par('xaxs', 'yaxs')
+    .gexp_plot_static_close(op)
   } else {
-    auxin <- tcltk::tk_choose.files()
+    .gexp_plot_dynamic_frame(main       = main,
+                             sub        = sub,
+                             xleftimg   = xleftimg,
+                             ybottomimg = ybottomimg,
+                             xrightimg  = xrightimg,
+                             ytopimg    = ytopimg,
+                             ...)
 
-    auxin1 <- gsub('[\\s\\S]*?\\.', 
-                   '', 
-                   auxin, 
-                   perl = TRUE)
+    .gexp_plot_locator_text(Labelsplot,
+                            coltext,
+                            message = 'Click with the left button on plot and end with the right button!')
 
-    auxin2 <- toupper(auxin1)
-
-    switch(auxin2,
-           PNG = {
-             myimage <- png::readPNG(auxin)
-           },
-           JPEG = {
-             myimage <- jpeg::readJPEG(auxin)
-           },
-           JPG = {
-             myimage <- jpeg::readJPEG(auxin)
-           }) 
-
-    plot(1,
-         type = 'n',
-         xlab = '',
-         ylab = '',
-         axes = FALSE,
-         main = main,
-         sub = sub,
-         ...)
-
-    rasterImage(myimage, 
-                xleft = xleftimg, 
-                ybottom = ybottomimg, 
-                xright = xrightimg, 
-                ytop = ytopimg) 
-
-    tcltk::tkmessageBox(message = 'Click with the left button on plot and end with the right button!') 
-
-    text(x = locator(),
-         y = NULL,
-         Labelsplot,
-         col = coltext)
-
-    tcltk::tkmessageBox(message = 'Now, click with the left button on sub plot and end with the right button!') 
-
-    text(x = locator(),
-         y = NULL,
-         treat,
-         col = coltext) 
-  }   
-} 
+    .gexp_plot_locator_text(treat,
+                            coltext,
+                            message = 'Now, click with the left button on sub plot and end with the right button!')
+  }
+}

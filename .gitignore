@@ -1,0 +1,14 @@
+# History and workspace
+.Rhistory
+.Rapp.history
+.RData
+.Ruserdata
+.Rproj.user
+
+# R CMD check and build artefacts
+*.Rcheck/
+*.tar.gz
+
+# Plots and local previews
+Rplots.pdf
+vignettes/*.html

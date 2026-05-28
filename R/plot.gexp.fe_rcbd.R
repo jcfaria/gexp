@@ -30,13 +30,13 @@ plot.gexp.fe_rcbd <- function(x,
 
   levelsinter <- levels(labelinter)
 
-  repp <- dim(x$X)[1]/(length(levelsinter)*length(levelsblock)) 
+  repp <- dim(x$X)[1]/(length(levelsinter)*length(levelsblock))
 
-  if(is.null(main)){
+  if (is.null(main)) {
     main = 'Factorial Structure \n Random Completely Block Design'
   }
 
-  if(is.null(sub)){
+  if (is.null(sub)) {
     sub <- paste('Factors: ',
                  paste(labelfac,
                        collapse = ', '),
@@ -52,145 +52,70 @@ plot.gexp.fe_rcbd <- function(x,
                  '\n',
                  paste('Block: ',
                        length(levelsblock),
-                       sep = '')) 
+                       sep = ''))
   }
-  
-  ifelse(random == FALSE,
-         {
-           treat <- rep(levelsinter,
-                        repp*length(levelsblock))
-         },
-         {
-           lblock <- rep(list(rep(levelsinter,
-                                  repp)),
-                         length(levelsblock))
-          
-           rtreat <- lapply(lblock,
-                            sample)
-           
-           treat <- unlist(rtreat)
-         })
-   
+
+  if (!random) {
+    treat <- rep(levelsinter,
+                 repp*length(levelsblock))
+  } else {
+    lblock <- rep(list(rep(levelsinter,
+                           repp)),
+                  length(levelsblock))
+
+    rtreat <- lapply(lblock,
+                     sample)
+
+    treat <- unlist(rtreat)
+  }
+
   rowsquare <- length(levelsblock)
- 
+
   columsquare <- dim(x$X)[1]/rowsquare
 
-  aux_posxcentro <- 1/columsquare
-  
-  aux_posxcentro1 <- aux_posxcentro + ((columsquare - 1)*2/columsquare)
-  
-  posxcentro <- seq(aux_posxcentro, 
-                    aux_posxcentro1, 
-                    by = 2/columsquare)
+  centers <- .gexp_plot_centers(rowsquare,
+                                columsquare)
+  posxcentro <- centers$posxcentro
+  posycentro <- centers$posycentro
 
-  aux_posycentro <- 1/rowsquare
-  
-  aux_posycentro1 <- aux_posycentro + ((rowsquare - 1)*2/rowsquare)
-  
-  posycentro <- seq(aux_posycentro, 
-                    aux_posycentro1, 
-                    by = 2/rowsquare)
+  if (!dynamic) {
+    op <- .gexp_plot_static_open(main = main,
+                                 sub  = sub,
+                                 ...)
 
-  if(!dynamic){ 
-    op <- par('xaxs', 'yaxs') # Original par('xaxs', 'yaxs')
-    
-    par(xaxs='i', 
-        yaxs='i')
-    
-    plot(1,
-         type = 'n',
-         xlim = c(0, 2),
-         ylim = c(0, 2),
-         axes = FALSE,
-         xlab = '',
-         ylab = '',
-         main = main,
-         sub = sub,
-         ...)
-   
-    box()
-    
-    grid(nx = columsquare,
-         ny = rowsquare,
-         col = colgrid,
-         lty = ltygrid,
-         lwd = lwdgrid)
+    .gexp_plot_grid(columsquare,
+                    rowsquare,
+                    colgrid,
+                    ltygrid,
+                    lwdgrid)
 
-    text(x = rep(posxcentro, 
-                 length(posycentro)),
-         y = rep(posycentro, 
-                 rep(length(posxcentro), 
-                     length(posycentro))),
-         treat,
-         col = coltext,
-         srt = 40)
+    .gexp_plot_text_rcbd(posxcentro,
+                         posycentro,
+                         treat,
+                         coltext,
+                         srt = 40)
 
-    arrows(-0.05,
-           seq(0, 
-               2, 
-               by = 2/rowsquare),
-           -0.05,
-           seq(2/rowsquare, 
-               2, 
-               by = 2/rowsquare),
-           angle = 90,
-           xpd = TRUE,
-           code = 3,
-           length = 0.06) 
+    .gexp_plot_arrows_row(rowsquare)
 
-    text(-0.08,
-         posycentro,
-         levelsblock,
-         col = colgrid,
-         xpd = TRUE,
-         srt = 90)
-   
-    par(op) # Restoring the original par('xaxs', 'yaxs')
+    .gexp_plot_label_row(posycentro,
+                         levelsblock,
+                         colgrid)
+
+    .gexp_plot_static_close(op)
   } else {
-    auxin <- tcltk::tk_choose.files()
-   
-    auxin1 <- gsub('[\\s\\S]*?\\.', 
-                   '', 
-                   auxin, 
-                   perl = TRUE)
-   
-    auxin2 <- toupper(auxin1)
+    .gexp_plot_dynamic_frame(main       = main,
+                             sub        = sub,
+                             xleftimg   = xleftimg,
+                             ybottomimg = ybottomimg,
+                             xrightimg  = xrightimg,
+                             ytopimg    = ytopimg,
+                             ...)
 
-    switch(auxin2,
-           PNG = {
-             myimage <- png::readPNG(auxin)
-           },
-           JPEG = {
-             myimage <- jpeg::readJPEG(auxin)
-           },
-           JPG = {
-             myimage <- jpeg::readJPEG(auxin)
-           }) 
+    .gexp_plot_locator_text(paste(labelblock,
+                                   1:rowsquare),
+                            coltext)
 
-    plot(1,
-         type = 'n',
-         xlab = '',
-         ylab = '',
-         axes = FALSE,
-         main = main,
-         sub = sub,
-         ...)
-
-    rasterImage(myimage, 
-                xleft = xleftimg, 
-                ybottom = ybottomimg, 
-                xright = xrightimg, 
-                ytop = ytopimg) 
-
-    text(x = locator(),
-         y = NULL,
-         paste(labelblock, 
-               1:rowsquare), 
-         col = coltext)  
-
-    text(x = locator(),
-         y = NULL,
-         treat,
-         col = coltext)
-  }    
-} 
+    .gexp_plot_locator_text(treat,
+                            coltext)
+  }
+}

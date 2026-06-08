@@ -2,11 +2,10 @@ Package: gexp
 Version: 1.1-0
 Date: 2026-05-23
 Title: Generator of Experiments
-Authors@R: c(person("J. C.", "Faria", role = "aut",
-               email = "joseclaudio.faria@gmail.com"),
-             person("I. B.", "Allaman", role = c("aut", "cre"),
-               email = "ivanalaman@gmail.com"))
-Maintainer: Allaman, I. B. <ivanalaman@gmail.com>
+Authors@R: c(person("I. B.", "Allaman", role = c("aut", "cre"),
+               email = "ivanalaman@gmail.com"),
+			person("J. C.", "Faria", role = "aut",
+               email = "joseclaudio.faria@gmail.com"))
 Depends: R (>= 4.1.0)
 Imports: mvtnorm, tcltk, jpeg, png
 Suggests: knitr, rmarkdown, testthat (>= 3.0.0)

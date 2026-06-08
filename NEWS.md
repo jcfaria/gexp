@@ -2,7 +2,7 @@
 
 # News - gexp R package
 
-## 1.1-0 (2026-05-23) - Faria, J. C.
+## 1.1-0 (2026-06-08) - Faria, J. C.
 
 ### Internal
 - Added `R/gexp-utils.R` with shared helpers for error simulation, response assembly, data-frame binding, result packing, and contrast merging; all nine `gexp.*` methods now call these helpers (no change in exported behaviour).
